@@ -1,0 +1,114 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation "Primary navigation" [ref=e3]:
+      - link "Radar4Flood Home" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: R4F
+        - generic [ref=e6]:
+          - generic [ref=e7]: Radar4Flood
+          - generic [ref=e8]: Academic flood forecasting project
+      - group [ref=e9]:
+        - generic "เมนู" [ref=e10]
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - paragraph [ref=e15]: ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม
+        - heading "Radar4Flood" [level=1] [ref=e16]
+        - paragraph [ref=e17]: เชื่อมโยงข้อมูลเรดาร์อากาศ งานภาคสนาม และงานวิชาการ เพื่อสื่อสารการคาดการณ์น้ำท่วมอย่างชัดเจน
+        - paragraph [ref=e18]: เว็บไซต์สาธารณะสำหรับแนะนำโครงการ เผยแพร่ข่าวและกิจกรรม แสดงผลงานวิชาการ และนำผู้ใช้งานไปยังหน้า forecast ที่มีอยู่แล้ว
+        - generic [ref=e19]:
+          - link "เข้าสู่หน้าพยากรณ์" [ref=e20] [cursor=pointer]:
+            - /url: /radar4flood
+          - link "อ่านข่าวล่าสุด" [ref=e21] [cursor=pointer]:
+            - /url: /news
+      - figure "ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม" [ref=e22]:
+        - img "สถานีเรดาร์ใกล้พื้นที่น้ำและทีมงานภาคสนามของโครงการ Radar4Flood" [ref=e23]
+        - generic [ref=e26]: ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม
+    - generic [ref=e28]:
+      - paragraph [ref=e29]: ทางเข้าระบบพยากรณ์
+      - paragraph [ref=e30]: หน้าเว็บไซต์นี้ทำหน้าที่เป็นพื้นที่สื่อสารโครงการ ส่วนการพยากรณ์และข้อมูลปฏิบัติการจะเปิดผ่านหน้า Radar4Flood โดยตรง
+      - link "ดูรายละเอียด Radar4Flood" [ref=e31] [cursor=pointer]:
+        - /url: /radar4flood
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - paragraph [ref=e35]: News
+          - heading "ข่าวและความก้าวหน้า" [level=2] [ref=e36]
+        - link "ดูข่าวทั้งหมด" [ref=e37] [cursor=pointer]:
+          - /url: /news
+      - generic [ref=e38]:
+        - article [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]:
+              - generic [ref=e42]: Work Update
+              - generic [ref=e43]: อัปเดตโครงการ
+            - heading "ติดตามสถานีเรดาร์และจุดตรวจวัดระดับน้ำในพื้นที่ศึกษา" [level=3] [ref=e44]:
+              - link "ติดตามสถานีเรดาร์และจุดตรวจวัดระดับน้ำในพื้นที่ศึกษา" [ref=e45] [cursor=pointer]:
+                - /url: /news
+            - paragraph [ref=e46]: ทีมโครงการรวบรวมข้อมูลภาคสนามเพื่อสนับสนุนการประเมินฝนจากเรดาร์และการสื่อสารความเสี่ยงน้ำท่วม
+        - article [ref=e47]:
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]: Project Milestone
+              - generic [ref=e51]: งานระบบเว็บไซต์
+            - heading "เตรียมโครงสร้างข้อมูลข่าวสำหรับ Sanity CMS" [level=3] [ref=e52]:
+              - link "เตรียมโครงสร้างข้อมูลข่าวสำหรับ Sanity CMS" [ref=e53] [cursor=pointer]:
+                - /url: /news
+            - paragraph [ref=e54]: ข่าว กิจกรรม และภาพภาคสนามจะจัดการผ่านเอกสารสองภาษาในระบบ CMS
+        - article [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: Publication
+              - generic [ref=e59]: งานเนื้อหา
+            - heading "จัดรูปแบบรายการผลงานวิชาการให้ค้นหาและอ่านง่าย" [level=3] [ref=e60]:
+              - link "จัดรูปแบบรายการผลงานวิชาการให้ค้นหาและอ่านง่าย" [ref=e61] [cursor=pointer]:
+                - /url: /publication
+            - paragraph [ref=e62]: รองรับชื่อบทความ ผู้แต่ง ปี วารสาร DOI และไฟล์ประกอบเมื่อข้อมูลพร้อม
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: Publication
+          - heading "ผลงานและเอกสารวิชาการ" [level=2] [ref=e68]
+        - paragraph [ref=e69]: ส่วนนี้เตรียมโครงสร้างสำหรับรายการผลงานจาก Sanity โดยรองรับชื่อเรื่อง ผู้แต่ง ปี แหล่งเผยแพร่ DOI และไฟล์ประกอบ
+      - generic [ref=e70]:
+        - article [ref=e71]:
+          - generic [ref=e72]: Journal Article
+          - heading "Radar rainfall estimation for flood forecasting" [level=3] [ref=e73]
+          - paragraph [ref=e74]: โครงสร้างสำหรับบทความวารสาร พร้อมปี ผู้แต่ง วารสาร และ DOI
+        - article [ref=e75]:
+          - generic [ref=e76]: Conference Paper
+          - heading "Weather radar data for operational hydrology" [level=3] [ref=e77]
+          - paragraph [ref=e78]: รองรับรายการประชุมวิชาการ บทคัดย่อ และลิงก์ไฟล์นำเสนอ
+        - article [ref=e79]:
+          - generic [ref=e80]: Project Report
+          - heading "Flood monitoring field report" [level=3] [ref=e81]
+          - paragraph [ref=e82]: พื้นที่สำหรับรายงานโครงการ ข้อมูลภาคสนาม และเอกสารอ้างอิง
+      - link "ไปยังหน้า Publication" [ref=e84] [cursor=pointer]:
+        - /url: /publication
+  - contentinfo [ref=e85]:
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - paragraph [ref=e88]: Radar4Flood
+        - paragraph [ref=e89]: เว็บไซต์โครงการวิจัยด้านเรดาร์อากาศและการคาดการณ์น้ำท่วม สำหรับข่าวสาร ผลงานวิชาการ ทีมงาน และทางเข้าสู่ระบบพยากรณ์
+      - generic [ref=e90]:
+        - link "Staff" [ref=e91] [cursor=pointer]:
+          - /url: /staff
+        - link "Contact Us" [ref=e92] [cursor=pointer]:
+          - /url: /contact
+        - link "English" [ref=e93] [cursor=pointer]:
+          - /url: /en
+  - generic [ref=e96]:
+    - button "Menu" [ref=e97]:
+      - img [ref=e99]
+      - generic: Menu
+    - button "Inspect" [ref=e103]:
+      - img [ref=e105]
+      - generic: Inspect
+    - button "Audit" [ref=e107]:
+      - generic [ref=e108]:
+        - img [ref=e109]
+        - img [ref=e112]
+      - generic: Audit
+    - button "Settings" [ref=e115]:
+      - img [ref=e117]
+      - generic: Settings

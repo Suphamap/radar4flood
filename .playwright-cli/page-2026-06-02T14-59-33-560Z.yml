@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation "Primary navigation" [ref=e3]:
+      - link "Radar4Flood Home" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: R4F
+        - generic [ref=e6]:
+          - generic [ref=e7]: Radar4Flood
+          - generic [ref=e8]: Academic flood forecasting project
+      - generic [ref=e9]:
+        - link "Home" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "Radar4Flood" [ref=e11] [cursor=pointer]:
+          - /url: /radar4flood
+        - link "News" [ref=e12] [cursor=pointer]:
+          - /url: /news
+        - link "Publication" [ref=e13] [cursor=pointer]:
+          - /url: /publication
+        - link "Staff" [ref=e14] [cursor=pointer]:
+          - /url: /staff
+        - link "Contact Us" [ref=e15] [cursor=pointer]:
+          - /url: /contact
+      - link "EN" [ref=e17] [cursor=pointer]:
+        - /url: /en
+  - main [ref=e18]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - paragraph [ref=e22]: ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม
+        - heading "Radar4Flood" [level=1] [ref=e23]
+        - paragraph [ref=e24]: เชื่อมโยงข้อมูลเรดาร์อากาศ งานภาคสนาม และงานวิชาการ เพื่อสื่อสารการคาดการณ์น้ำท่วมอย่างชัดเจน
+        - paragraph [ref=e25]: เว็บไซต์สาธารณะสำหรับแนะนำโครงการ เผยแพร่ข่าวและกิจกรรม แสดงผลงานวิชาการ และนำผู้ใช้งานไปยังหน้า forecast ที่มีอยู่แล้ว
+        - generic [ref=e26]:
+          - link "เข้าสู่หน้าพยากรณ์" [ref=e27] [cursor=pointer]:
+            - /url: /radar4flood
+          - link "อ่านข่าวล่าสุด" [ref=e28] [cursor=pointer]:
+            - /url: /news
+      - figure "ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม" [ref=e29]:
+        - img "สถานีเรดาร์ใกล้พื้นที่น้ำและทีมงานภาคสนามของโครงการ Radar4Flood" [ref=e30]
+        - generic [ref=e33]: ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม
+    - generic [ref=e35]:
+      - paragraph [ref=e36]: ทางเข้าระบบพยากรณ์
+      - paragraph [ref=e37]: หน้าเว็บไซต์นี้ทำหน้าที่เป็นพื้นที่สื่อสารโครงการ ส่วนการพยากรณ์และข้อมูลปฏิบัติการจะเปิดผ่านหน้า Radar4Flood โดยตรง
+      - link "ดูรายละเอียด Radar4Flood" [ref=e38] [cursor=pointer]:
+        - /url: /radar4flood
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - paragraph [ref=e42]: News
+          - heading "ข่าวและความก้าวหน้า" [level=2] [ref=e43]
+        - link "ดูข่าวทั้งหมด" [ref=e44] [cursor=pointer]:
+          - /url: /news
+      - generic [ref=e45]:
+        - article [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - generic [ref=e49]: Work Update
+              - generic [ref=e50]: อัปเดตโครงการ
+            - heading "ติดตามสถานีเรดาร์และจุดตรวจวัดระดับน้ำในพื้นที่ศึกษา" [level=3] [ref=e51]:
+              - link "ติดตามสถานีเรดาร์และจุดตรวจวัดระดับน้ำในพื้นที่ศึกษา" [ref=e52] [cursor=pointer]:
+                - /url: /news
+            - paragraph [ref=e53]: ทีมโครงการรวบรวมข้อมูลภาคสนามเพื่อสนับสนุนการประเมินฝนจากเรดาร์และการสื่อสารความเสี่ยงน้ำท่วม
+        - article [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: Project Milestone
+              - generic [ref=e58]: งานระบบเว็บไซต์
+            - heading "เตรียมโครงสร้างข้อมูลข่าวสำหรับ Sanity CMS" [level=3] [ref=e59]:
+              - link "เตรียมโครงสร้างข้อมูลข่าวสำหรับ Sanity CMS" [ref=e60] [cursor=pointer]:
+                - /url: /news
+            - paragraph [ref=e61]: ข่าว กิจกรรม และภาพภาคสนามจะจัดการผ่านเอกสารสองภาษาในระบบ CMS
+        - article [ref=e62]:
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: Publication
+              - generic [ref=e66]: งานเนื้อหา
+            - heading "จัดรูปแบบรายการผลงานวิชาการให้ค้นหาและอ่านง่าย" [level=3] [ref=e67]:
+              - link "จัดรูปแบบรายการผลงานวิชาการให้ค้นหาและอ่านง่าย" [ref=e68] [cursor=pointer]:
+                - /url: /publication
+            - paragraph [ref=e69]: รองรับชื่อบทความ ผู้แต่ง ปี วารสาร DOI และไฟล์ประกอบเมื่อข้อมูลพร้อม
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - paragraph [ref=e74]: Publication
+          - heading "ผลงานและเอกสารวิชาการ" [level=2] [ref=e75]
+        - paragraph [ref=e76]: ส่วนนี้เตรียมโครงสร้างสำหรับรายการผลงานจาก Sanity โดยรองรับชื่อเรื่อง ผู้แต่ง ปี แหล่งเผยแพร่ DOI และไฟล์ประกอบ
+      - generic [ref=e77]:
+        - article [ref=e78]:
+          - generic [ref=e79]: Journal Article
+          - heading "Radar rainfall estimation for flood forecasting" [level=3] [ref=e80]
+          - paragraph [ref=e81]: โครงสร้างสำหรับบทความวารสาร พร้อมปี ผู้แต่ง วารสาร และ DOI
+        - article [ref=e82]:
+          - generic [ref=e83]: Conference Paper
+          - heading "Weather radar data for operational hydrology" [level=3] [ref=e84]
+          - paragraph [ref=e85]: รองรับรายการประชุมวิชาการ บทคัดย่อ และลิงก์ไฟล์นำเสนอ
+        - article [ref=e86]:
+          - generic [ref=e87]: Project Report
+          - heading "Flood monitoring field report" [level=3] [ref=e88]
+          - paragraph [ref=e89]: พื้นที่สำหรับรายงานโครงการ ข้อมูลภาคสนาม และเอกสารอ้างอิง
+      - link "ไปยังหน้า Publication" [ref=e91] [cursor=pointer]:
+        - /url: /publication
+  - contentinfo [ref=e92]:
+    - generic [ref=e93]:
+      - generic [ref=e94]:
+        - paragraph [ref=e95]: Radar4Flood
+        - paragraph [ref=e96]: เว็บไซต์โครงการวิจัยด้านเรดาร์อากาศและการคาดการณ์น้ำท่วม สำหรับข่าวสาร ผลงานวิชาการ ทีมงาน และทางเข้าสู่ระบบพยากรณ์
+      - generic [ref=e97]:
+        - link "Staff" [ref=e98] [cursor=pointer]:
+          - /url: /staff
+        - link "Contact Us" [ref=e99] [cursor=pointer]:
+          - /url: /contact
+        - link "English" [ref=e100] [cursor=pointer]:
+          - /url: /en
+  - generic [ref=e103]:
+    - button "Menu" [ref=e104]:
+      - img [ref=e106]
+      - generic: Menu
+    - button "Inspect" [ref=e110]:
+      - img [ref=e112]
+      - generic: Inspect
+    - button "Audit" [ref=e114]:
+      - generic [ref=e115]:
+        - img [ref=e116]
+        - img [ref=e119]
+      - generic: Audit
+    - button "Settings" [ref=e122]:
+      - img [ref=e124]
+      - generic: Settings

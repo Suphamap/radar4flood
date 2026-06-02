@@ -1,21 +1,303 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const forecastUrl = import.meta.env.PUBLIC_FORECAST_URL || '/radar4flood';
+
+const navItems = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Radar4Flood', href: '/radar4flood' },
+	{ label: 'News', href: '/news' },
+	{ label: 'Publication', href: '/publication' },
+	{ label: 'Staff', href: '/staff' },
+	{ label: 'Contact Us', href: '/contact' },
+];
+
+const newsItems = [
+	{
+		category: 'Work Update',
+		title: 'ติดตามสถานีเรดาร์และจุดตรวจวัดระดับน้ำในพื้นที่ศึกษา',
+		excerpt:
+			'ทีมโครงการรวบรวมข้อมูลภาคสนามเพื่อสนับสนุนการประเมินฝนจากเรดาร์และการสื่อสารความเสี่ยงน้ำท่วม',
+		date: 'อัปเดตโครงการ',
+		href: '/news',
+		featured: true,
+	},
+	{
+		category: 'Project Milestone',
+		title: 'เตรียมโครงสร้างข้อมูลข่าวสำหรับ Sanity CMS',
+		excerpt: 'ข่าว กิจกรรม และภาพภาคสนามจะจัดการผ่านเอกสารสองภาษาในระบบ CMS',
+		date: 'งานระบบเว็บไซต์',
+		href: '/news',
+	},
+	{
+		category: 'Publication',
+		title: 'จัดรูปแบบรายการผลงานวิชาการให้ค้นหาและอ่านง่าย',
+		excerpt: 'รองรับชื่อบทความ ผู้แต่ง ปี วารสาร DOI และไฟล์ประกอบเมื่อข้อมูลพร้อม',
+		date: 'งานเนื้อหา',
+		href: '/publication',
+	},
+];
+
+const publicationItems = [
+	{
+		type: 'Journal Article',
+		title: 'Radar rainfall estimation for flood forecasting',
+		detail: 'โครงสร้างสำหรับบทความวารสาร พร้อมปี ผู้แต่ง วารสาร และ DOI',
+	},
+	{
+		type: 'Conference Paper',
+		title: 'Weather radar data for operational hydrology',
+		detail: 'รองรับรายการประชุมวิชาการ บทคัดย่อ และลิงก์ไฟล์นำเสนอ',
+	},
+	{
+		type: 'Project Report',
+		title: 'Flood monitoring field report',
+		detail: 'พื้นที่สำหรับรายงานโครงการ ข้อมูลภาคสนาม และเอกสารอ้างอิง',
+	},
+];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} >
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  	<h2>Create a Astro template with a basic "Astro" title</h2>
-  </body>
-</html>
+<Layout
+	title="Radar4Flood | ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม"
+	description="Radar4Flood introduces a radar-based flood forecasting academic project, with project updates, publications, staff information, and a path to the forecast webpage."
+>
+	<header class="absolute inset-x-0 top-0 z-20">
+		<nav
+			class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-5 text-white sm:px-8"
+			aria-label="Primary navigation"
+		>
+			<a class="group flex items-center gap-3" href="/" aria-label="Radar4Flood Home">
+				<span
+					class="text-brand-navy grid size-10 place-items-center rounded-full bg-white"
+					aria-hidden="true"
+				>
+					R4F
+				</span>
+				<span class="leading-tight">
+					<span class="block font-display text-lg font-semibold tracking-normal">Radar4Flood</span>
+					<span class="block text-xs font-medium text-white/68">Academic flood forecasting project</span>
+				</span>
+			</a>
+
+			<div class="hidden items-center gap-1 rounded-full bg-white/9 px-2 py-2 backdrop-blur md:flex">
+				{
+					navItems.map((item) => (
+						<a
+							class="rounded-full px-4 py-2 text-sm font-medium text-white/78 transition hover:bg-white/12 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+							href={item.href}
+						>
+							{item.label}
+						</a>
+					))
+				}
+			</div>
+
+			<div class="hidden items-center gap-3 md:flex">
+				<a
+					class="rounded-full border border-white/26 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+					href="/en"
+				>
+					EN
+				</a>
+			</div>
+
+			<details class="relative md:hidden">
+				<summary
+					class="text-brand-navy list-none rounded-full bg-white px-4 py-2 text-sm font-semibold marker:hidden"
+				>
+					เมนู
+				</summary>
+				<div class="text-brand-navy absolute right-0 mt-3 w-56 rounded-2xl bg-white p-2 shadow-[0_8px_24px_rgb(0_30_69_/_18%)]">
+					{
+						navItems.map((item) => (
+							<a class="block rounded-xl px-4 py-3 text-sm font-semibold hover:bg-r4f-low" href={item.href}>
+								{item.label}
+							</a>
+						))
+					}
+					<a class="block rounded-xl px-4 py-3 text-sm font-semibold hover:bg-r4f-low" href="/en">
+						EN
+					</a>
+				</div>
+			</details>
+		</nav>
+	</header>
+
+	<main>
+		<section class="radar-field relative isolate overflow-hidden pb-10 pt-28 text-white md:pb-0 md:pt-32">
+			<div class="mx-auto grid max-w-7xl items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.88fr_1.12fr]">
+				<div class="relative z-10 max-w-2xl pb-2 md:pb-14 lg:pb-24">
+					<p class="mb-5 inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-sky-100">
+						ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม
+					</p>
+					<h1 class="max-w-3xl font-display text-5xl font-semibold leading-[1.06] tracking-normal sm:text-6xl lg:text-7xl">
+						Radar4Flood
+					</h1>
+					<p class="mt-6 max-w-2xl text-xl font-medium leading-9 text-white sm:text-2xl">
+						เชื่อมโยงข้อมูลเรดาร์อากาศ งานภาคสนาม และงานวิชาการ เพื่อสื่อสารการคาดการณ์น้ำท่วมอย่างชัดเจน
+					</p>
+					<p class="mt-6 max-w-xl text-base leading-8 text-white/72">
+						เว็บไซต์สาธารณะสำหรับแนะนำโครงการ เผยแพร่ข่าวและกิจกรรม แสดงผลงานวิชาการ และนำผู้ใช้งานไปยังหน้า forecast ที่มีอยู่แล้ว
+					</p>
+					<div class="mt-9 flex flex-wrap gap-3">
+						<a
+							class="text-brand-navy rounded-full bg-white px-5 py-3 text-sm font-bold transition hover:bg-sky-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+							href={forecastUrl}
+						>
+							เข้าสู่หน้าพยากรณ์
+						</a>
+						<a
+							class="rounded-full bg-r4f-teal px-5 py-3 text-sm font-bold text-white transition hover:bg-[#086065] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+							href="/news"
+						>
+							อ่านข่าวล่าสุด
+						</a>
+					</div>
+				</div>
+
+				<figure class="relative z-10 -mx-5 overflow-hidden sm:mx-0 lg:mt-10">
+					<img
+						class="hero-image-mask h-[26rem] w-full object-cover sm:h-[34rem] lg:h-[42rem]"
+						src="/images/radar4flood-field-radar.png"
+						alt="สถานีเรดาร์ใกล้พื้นที่น้ำและทีมงานภาคสนามของโครงการ Radar4Flood"
+						width="1824"
+						height="1024"
+					/>
+					<div class="absolute inset-0 bg-gradient-to-t from-r4f-navy via-transparent to-transparent lg:bg-gradient-to-r lg:from-r4f-navy lg:via-transparent lg:to-transparent"></div>
+					<div
+						class="signal-sweep absolute right-[8%] top-[18%] h-52 w-52 rounded-full border border-sky-200/30 bg-sky-200/8"
+						aria-hidden="true"
+					></div>
+					<figcaption class="absolute bottom-5 left-5 max-w-sm bg-[rgb(0_30_69_/_82%)] px-4 py-3 text-sm leading-6 text-white/82 backdrop-blur">
+						ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม
+					</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section class="bg-r4f-low">
+			<div class="mx-auto grid max-w-7xl gap-5 px-5 py-6 sm:px-8 lg:grid-cols-[0.72fr_1fr_auto] lg:items-center">
+				<p class="font-display text-2xl font-semibold text-r4f-navy">
+					ทางเข้าระบบพยากรณ์
+				</p>
+				<p class="max-w-3xl text-sm leading-7 text-r4f-muted">
+					หน้าเว็บไซต์นี้ทำหน้าที่เป็นพื้นที่สื่อสารโครงการ ส่วนการพยากรณ์และข้อมูลปฏิบัติการจะเปิดผ่านหน้า Radar4Flood โดยตรง
+				</p>
+				<a
+					class="inline-flex w-fit rounded-full bg-r4f-navy px-5 py-3 text-sm font-bold text-white transition hover:bg-[#062958] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-navy"
+					href="/radar4flood"
+				>
+					ดูรายละเอียด Radar4Flood
+				</a>
+			</div>
+		</section>
+
+		<section id="news" class="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
+			<div class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+				<div>
+					<p class="mb-3 text-sm font-semibold text-r4f-teal">News</p>
+					<h2 class="font-display text-4xl font-semibold tracking-normal text-r4f-navy sm:text-5xl">
+						ข่าวและความก้าวหน้า
+					</h2>
+				</div>
+				<a class="text-sm font-bold text-r4f-teal hover:text-r4f-navy" href="/news">
+					ดูข่าวทั้งหมด
+				</a>
+			</div>
+
+			<div class="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+				{
+					newsItems.map((item, index) => (
+						<article
+							class:list={[
+								'bg-white p-6 ring-1 ring-r4f-line transition hover:-translate-y-0.5 hover:ring-r4f-sky',
+								index === 0 ? 'lg:row-span-2 min-h-[24rem] flex flex-col justify-end bg-[linear-gradient(180deg,_rgb(0_30_69_/_0%)_0%,_rgb(0_30_69_/_92%)_100%),url(/images/radar4flood-field-radar.png)] bg-cover bg-center text-white' : 'min-h-48',
+							]}
+						>
+							<div class="max-w-2xl">
+								<div class="mb-5 flex flex-wrap items-center gap-3">
+									<span
+										class:list={[
+											'rounded-full px-3 py-1 text-xs font-bold',
+											index === 0 ? 'bg-white text-r4f-navy' : 'bg-r4f-low text-r4f-teal',
+										]}
+									>
+										{item.category}
+									</span>
+									<span class:list={['text-sm font-medium', index === 0 ? 'text-white/72' : 'text-r4f-muted']}>
+										{item.date}
+									</span>
+								</div>
+								<h3 class:list={['font-display font-semibold leading-tight', index === 0 ? 'text-3xl sm:text-4xl' : 'text-2xl text-r4f-navy']}>
+									<a class="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky" href={item.href}>
+										{item.title}
+									</a>
+								</h3>
+								<p class:list={['mt-4 leading-7', index === 0 ? 'text-white/78' : 'text-r4f-muted']}>
+									{item.excerpt}
+								</p>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section id="publication" class="bg-r4f-low py-16 lg:py-24">
+			<div class="mx-auto max-w-7xl px-5 sm:px-8">
+				<div class="mb-10 grid gap-6 md:grid-cols-[0.8fr_1fr] md:items-end">
+					<div>
+						<p class="mb-3 text-sm font-semibold text-r4f-teal">Publication</p>
+						<h2 class="font-display text-4xl font-semibold tracking-normal text-r4f-navy sm:text-5xl">
+							ผลงานและเอกสารวิชาการ
+						</h2>
+					</div>
+					<p class="max-w-3xl text-base leading-8 text-r4f-muted">
+						ส่วนนี้เตรียมโครงสร้างสำหรับรายการผลงานจาก Sanity โดยรองรับชื่อเรื่อง ผู้แต่ง ปี แหล่งเผยแพร่ DOI และไฟล์ประกอบ
+					</p>
+				</div>
+
+				<div class="grid gap-5 md:grid-cols-3">
+					{
+						publicationItems.map((item) => (
+							<article class="bg-white p-6 ring-1 ring-r4f-line">
+								<span class="mb-8 inline-flex rounded-full bg-sky-100 px-3 py-1 text-xs font-bold text-r4f-navy">
+									{item.type}
+								</span>
+								<h3 class="font-display text-2xl font-semibold leading-snug text-r4f-navy">
+									{item.title}
+								</h3>
+								<p class="mt-4 text-sm leading-7 text-r4f-muted">{item.detail}</p>
+							</article>
+						))
+					}
+				</div>
+
+				<div class="mt-8 flex justify-end">
+					<a
+						class="inline-flex rounded-full bg-r4f-teal px-5 py-3 text-sm font-bold text-white transition hover:bg-[#086065] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-teal"
+						href="/publication"
+					>
+						ไปยังหน้า Publication
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="bg-r4f-navy text-white">
+		<div class="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1fr_auto] md:items-center">
+			<div>
+				<p class="font-display text-2xl font-semibold">Radar4Flood</p>
+				<p class="mt-2 max-w-2xl text-sm leading-7 text-white/68">
+					เว็บไซต์โครงการวิจัยด้านเรดาร์อากาศและการคาดการณ์น้ำท่วม สำหรับข่าวสาร ผลงานวิชาการ ทีมงาน และทางเข้าสู่ระบบพยากรณ์
+				</p>
+			</div>
+			<div class="flex flex-wrap gap-3 text-sm font-semibold text-white/76">
+				<a class="hover:text-white" href="/staff">Staff</a>
+				<a class="hover:text-white" href="/contact">Contact Us</a>
+				<a class="hover:text-white" href="/en">English</a>
+			</div>
+		</div>
+	</footer>
+</Layout>
