@@ -1,22 +1,21 @@
-# Codex Agent Instructions
+# AI Coding Agent Instructions
 
-You are working on the Radar4Flood website.
+You are working on the Radar4Flood website. These rules are for Codex and any future AI coding agent working in this repository.
 
-Read these files before making major changes:
+## Read First
 
-1. `README.md` for the stable project direction
-2. `context.md` for product, content, bilingual, navigation, and design context
-3. `AGENTS.md` for coding-agent rules
+Before making major changes, read:
 
-## Project Summary
+1. `README.md` for stable project direction, scope, routes, and setup notes
+2. `context.md` for product, content, bilingual, Sanity, and design context
+3. `DESIGN.md` for detailed design tokens, component rules, and frontend visual guidance when working on frontend UI
+4. `AGENTS.md` for agent operating rules
 
-Radar4Flood is a public-facing academic website for a radar-based flood forecasting project. It introduces the project, publishes news and work updates, presents publications and staff information, provides basic contact information, and links to an existing forecast webpage.
+For small targeted fixes, read the relevant files before editing.
 
-This is not a login-based web app and not a forecasting dashboard.
+## Fixed Constraints
 
-## Fixed Technical Direction
-
-Use this stack unless the human project owner explicitly changes it:
+Preserve these unless the project owner explicitly changes them:
 
 - Astro
 - TypeScript where useful
@@ -24,355 +23,95 @@ Use this stack unless the human project owner explicitly changes it:
 - Sanity CMS
 - Netlify hosting
 - Thai as the default language
-- Thai and English support for UI and content
+- English support for UI and content
+- Confirmed navbar order: Home, Radar4Flood, News, Publication, Staff, Contact Us
 
-Do not replace Sanity with another CMS. Do not introduce a custom backend unless explicitly requested.
+Do not replace Sanity, add a custom backend, add public authentication, rebuild the forecast interface, or add a public contact form unless explicitly requested.
 
-## Confirmed Navigation
+## Product Boundaries
 
-The primary navbar has been decided. Use this order:
+Radar4Flood is a public academic project website. It should explain the project, publish updates, support image-rich news, present publications and staff, provide basic contact information, and link clearly to the existing forecast webpage.
 
-```text
-Home
-Radar4Flood
-News
-Publication
-Staff
-Contact Us
-```
+It is not a login-based web app, SaaS product, internal dashboard, or forecasting system.
 
-Recommended route mapping:
+## Reuse Before Creating
 
-```text
-/                  Home
-/radar4flood       Radar4Flood feature / forecast link page
-/news              News listing
-/news/[slug]       News detail
-/publication       Publication page
-/staff             Staff page
-/contact           Contact Us page
-/en                English Home
-/en/radar4flood    English Radar4Flood feature / forecast link page
-/en/news           English News listing
-/en/news/[slug]    English News detail
-/en/publication    English Publication page
-/en/staff          English Staff page
-/en/contact        English Contact Us page
-```
+Before adding new code, inspect and reuse existing project patterns:
 
-Do not replace this navbar with a different sitemap unless the project owner explicitly changes it.
+- Shared layouts in `src/layouts/`
+- Reusable Astro components in `src/components/`
+- Shared section templates in `src/components/sections/`
+- Typed local data helpers in `src/data/`
+- Shared TypeScript types in `src/types/`
+- UI label dictionaries and language helpers in `src/lib/i18n/`
+- Sanity clients, GROQ queries, image helpers, and data mappers in `src/lib/sanity/`
 
-The `Radar4Flood` item should be treated as a feature/link entry point to the existing forecast webpage. Prefer a dedicated page with a clear CTA unless the final forecast URL is meant to be linked directly from the navbar.
+Do not create one-off components, duplicated language-specific components, scattered query strings, or new data shapes when an existing helper can be extended cleanly.
 
-## Main Product Goals
+## Implementation Rules
 
-Prioritize work that helps the website:
-
-- Explain what Radar4Flood is
-- Look credible, modern, academic, and approachable
-- Publish updates through Sanity
-- Support image-rich posts
-- Present publications clearly
-- Present staff / team information clearly
-- Provide basic contact information without requiring a form
-- Work well on mobile, tablet, and desktop
-- Link clearly to the existing forecast webpage
-
-## Current Scope
-
-Build the public website first.
-
-Required pages:
-
-- Home
-- Radar4Flood feature / forecast link page
-- News listing
-- News detail
-- Publication
-- Staff
-- Contact Us
-
-Optional later pages:
-
-- Partners
-- Projects / Activities archive
-- About, only if the project owner wants a separate About page later
-
-Do not build user accounts, dashboards, public login flows, or a contact form unless explicitly requested.
-
-## Sanity Rules
-
-Sanity is the CMS for staff-managed content. Keep schemas simple.
-
-Expected schema types:
-
-- `post`
-- `category`
-- `author`
-- `publication`, if publications are CMS-managed
-- `staffMember`, if staff profiles are CMS-managed
-
-A `post` should support:
-
-- Thai title
-- English title
-- Slug
-- Thai excerpt
-- English excerpt
-- Thai body
-- English body
-- Publish date
-- Featured image
-- Optional image gallery
-- Category reference
-- Author reference
-- Featured flag
-
-A `publication` should support:
-
-- Thai title, optional if not available
-- English title
-- Authors
-- Year
-- Venue / journal / conference
-- DOI or external URL, optional
-- PDF or file URL, optional
-- Thai summary, optional
-- English summary, optional
-- Publication type, optional
-- Featured flag, optional
-
-A `staffMember` should support:
-
-- Name
-- Role / position
-- Affiliation
-- Photo, optional
-- Thai bio, optional
-- English bio, optional
-- Email or contact link, optional
-- Display order
-
-Implementation guidance:
-
-- Keep GROQ queries in a small Sanity utility layer such as `src/lib/sanity/`.
-- Define clear TypeScript types for Sanity results.
-- Avoid scattering query strings throughout components.
+- Keep changes small, coherent, and scoped to the request.
+- Follow existing file naming, component structure, Tailwind patterns, and typography choices.
+- Prefer static Astro pages and server-side data loading for public content.
+- Use client-side JavaScript only when interaction requires it.
+- Keep page files focused on composition and data loading.
+- Keep presentation components mostly free of data-fetching details.
+- Use TypeScript types for Sanity results, mock data, and shared helpers.
+- If using mock data, keep it typed and easy to migrate into Sanity.
+- Keep UI labels language-aware through the i18n layer instead of hardcoding duplicated Thai/English strings.
+- Keep GROQ queries centralized in Sanity utility files.
 - Do not expose private tokens to client-side code.
-- Use public dataset reads for published content when possible.
-- Add draft-preview behavior only if requested.
-- If Publication or Staff content is not ready in Sanity, use typed local mock data first and make the migration path clear.
 
-## Bilingual Rules
+## Design And Content Rules
 
-Thai is the default language. English should be supported from the beginning where practical.
+Follow the Radar4Flood design system described in `context.md`: academic credibility, modern editorial layout, structured calm, bilingual readability, and professional but approachable tone.
 
-Recommended route structure:
-
-```text
-/                  Thai homepage
-/radar4flood       Thai Radar4Flood feature / forecast link page
-/news              Thai news listing
-/news/[slug]       Thai news detail
-/publication       Thai publication page
-/staff             Thai staff page
-/contact           Thai contact page
-/en                English homepage
-/en/radar4flood    English Radar4Flood feature / forecast link page
-/en/news           English news listing
-/en/news/[slug]    English news detail
-/en/publication    English publication page
-/en/staff          English staff page
-/en/contact        English contact page
-```
-
-Guidance:
-
-- Keep UI labels in a small i18n dictionary.
-- Keep Thai and English content fields in the same Sanity document.
-- Do not create separate unrelated items for each language unless instructed.
-- Make fallback behavior explicit if English content is missing.
-- Keep navbar labels language-aware.
-
-## Design Rules
-
-Follow the Radar4Flood design system, "The Radar Current".
-
-Use the design direction:
-
-- Academic credibility
-- Modern editorial layout
-- Structured calm
-- Signal-led emphasis
-- Bilingual readability
-- Professional but approachable tone
-
-Core visual tokens:
-
-- Primary navy: `#001E45`
-- Secondary teal: `#0B676C`
-- Tertiary sky blue: `#45A0F3`
-- Base surface: `#FCFCFC`
-- Low surface: `#F5F9FC`
-- Card surface: `#FFFFFF`
-
-Typography direction:
-
-- Use IBM Plex Sans Thai for display and major headings when available.
-- Use Noto Sans Thai for body text, labels, and bilingual readability.
-- Keep long-form content left-aligned.
-
-Component guidance:
-
-- Prefer surface shifts, spacing, and hierarchy over hard borders.
-- Avoid border-heavy cards.
-- Use soft shadows only when elevation is needed.
-- Use chips for categories such as Announcement, Work Update, Event, Publication, and Project Milestone.
-- Use radar arcs, wave lines, and map-like textures sparingly as background accents.
+- Use the Radar Current palette and typography direction already established in the project.
+- Prefer surface shifts, spacing, hierarchy, and restrained shadows over heavy borders.
+- Keep long-form Thai and English content left-aligned.
+- Use category chips for Announcement, Work Update, Event, Publication, and Project Milestone where useful.
+- Use radar arcs, wave lines, and map-like textures sparingly.
 - Do not make the site look like a loud data dashboard.
 
-## Coding Style
+## Accessibility
 
-General:
-
-- Keep code readable and maintainable.
-- Prefer simple Astro components for static UI.
-- Use client-side JavaScript only when interaction requires it.
-- Avoid premature abstractions.
-- Name files and components clearly.
-- Keep components small enough to understand quickly.
-
-Astro:
-
-- Use layouts for shared page structure.
-- Use components for repeated UI sections.
-- Keep page files focused on composition and data loading.
-- Prefer static generation for public content.
-
-Tailwind:
-
-- Use Tailwind utilities consistently.
-- Extract repeated visual patterns into components.
-- Do not create many one-off custom CSS rules when utilities are enough.
-- Keep theme tokens aligned with the design system.
-
-Accessibility:
-
-- Use semantic HTML.
-- Use meaningful heading order.
-- Add alt text for content images.
+- Use semantic HTML and meaningful heading order.
+- Add useful alt text for content images.
 - Ensure links and buttons have clear labels.
 - Keep contrast strong enough for readability.
-- Support keyboard navigation for interactive elements.
+- Preserve keyboard navigation for interactive elements.
 
-## Suggested File Organization
-
-Use or adapt this structure:
-
-```text
-src/
-  components/
-    common/
-    layout/
-    news/
-    publication/
-    staff/
-    sections/
-  data/
-  layouts/
-  lib/
-    sanity/
-    i18n/
-  pages/
-    index.astro
-    radar4flood.astro
-    news/
-      index.astro
-      [slug].astro
-    publication.astro
-    staff.astro
-    contact.astro
-    en/
-      index.astro
-      radar4flood.astro
-      news/
-        index.astro
-        [slug].astro
-      publication.astro
-      staff.astro
-      contact.astro
-  styles/
-  types/
-sanity/
-  schemaTypes/
-public/
-```
-
-## Environment Variables
-
-Expected variables may include:
-
-```text
-PUBLIC_SANITY_PROJECT_ID=
-PUBLIC_SANITY_DATASET=
-PUBLIC_SANITY_API_VERSION=
-PUBLIC_FORECAST_URL=
-```
-
-Only add private tokens if a server-only feature requires them.
-
-## Working Method For Codex
+## Working Method
 
 Before editing:
 
 1. Inspect the existing file structure.
-2. Read relevant files before changing them.
-3. Preserve the Astro + Sanity + Netlify direction.
-4. Preserve the confirmed navbar unless instructed otherwise.
-5. Keep scope small and focused.
+2. Read the relevant files.
+3. Read `DESIGN.md` before frontend UI changes.
+4. Check for existing layouts, components, helpers, data, i18n dictionaries, and Sanity utilities to reuse.
+5. Preserve the fixed stack, navbar, bilingual direction, and forecast-link boundary.
 
 While editing:
 
 1. Make minimal, coherent changes.
-2. Reuse existing patterns.
-3. Keep content and presentation separated where practical.
-4. Avoid large rewrites unless they clearly improve maintainability.
+2. Reuse existing patterns before creating new ones.
+3. Keep content, data access, and presentation separated where practical.
+4. Avoid broad rewrites unless they clearly improve maintainability and are within scope.
 5. Do not silently remove working features.
 
 Before finishing:
 
-1. Run available checks, such as `npm run format`, `npm run lint`, and `npm run build`, when scripts exist.
-2. Report any command failures honestly.
-3. Summarize changed files and why they changed.
-4. Mention any follow-up tasks that remain.
+1. Check `package.json` for available scripts.
+2. Run relevant checks such as `npm run build`, `npm run lint`, or `npm run format` when those scripts exist.
+3. Report any command failures honestly, including the failed command.
+4. Summarize changed files and why they changed.
+5. Mention follow-up tasks that remain.
 
-## Do Not Do
+Do not claim a feature is complete if build or lint checks fail.
 
-- Do not change the CMS away from Sanity.
-- Do not add user authentication.
-- Do not rebuild the forecast interface.
-- Do not add a complex custom backend.
-- Do not introduce heavy frontend frameworks unless needed.
-- Do not add a public contact form unless requested.
-- Do not use loud dashboard styling.
-- Do not rely on thick borders for layout hierarchy.
-- Do not make long-form Thai or English content over-centered.
-- Do not claim a feature is complete if build or lint checks fail.
+## Git And Worktree Safety
 
-## Preferred First Implementation Path
-
-When starting from a clean project, build in this order:
-
-1. Astro + Tailwind base setup
-2. Theme tokens and global layout
-3. Header, footer, and confirmed navigation
-4. Homepage sections
-5. Radar4Flood feature / forecast link page
-6. News listing and news detail UI using mock data
-7. Publication page using mock or Sanity data
-8. Staff page using mock or Sanity data
-9. Contact Us page with static contact information
-10. Sanity schema types
-11. Sanity client and query helpers
-12. Replace mock content with Sanity content
-13. Netlify deployment configuration
+- The worktree may contain user changes. Do not revert or overwrite unrelated changes.
+- Do not run destructive commands such as `git reset --hard`, `git checkout --`, or broad deletes unless explicitly requested.
+- If existing user changes overlap with the task, read them carefully and work with them.
+- If unrelated files are dirty, leave them alone.
