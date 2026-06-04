@@ -1,0 +1,73 @@
+---
+import { navItems } from '../data/navigation';
+import { t } from '../lib/i18n';
+import type { Lang } from '../lib/i18n';
+import type { LabelKey } from '../lib/i18n/labels';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+
+const langPrefix = lang === 'en' ? '/en' : '';
+const langSwitchHref = lang === 'en' ? '/' : '/en';
+const langSwitchLabel = t(lang, 'navLangSwitch');
+---
+
+<header class="sticky inset-x-0 top-0 z-30 bg-r4f-navy text-white">
+	<nav
+		class="mx-auto flex max-w-[94rem] items-center justify-between gap-5 px-5 py-3.5 sm:px-8 2xl:max-w-[102rem]"
+		aria-label="Primary navigation"
+	>
+		<a class="flex min-h-11 items-center" href={langPrefix || '/'} aria-label="Radar4Flood Home">
+			<img
+				class="h-11 w-auto object-contain sm:h-12"
+				src="/images/Radar4flood_Horizon_PNG.png"
+				alt="โลโก้ของโครงการ Radar4Flood"
+				width="192"
+				height="32"
+			/>
+		</a>
+
+		<div class="hidden items-center gap-1 rounded-full bg-white/8 px-2 py-1.5 lg:flex">
+			{
+				navItems.map((item) => (
+					<a
+						class="rounded-full px-3.5 py-2 text-sm font-medium text-white/78 transition hover:bg-white/12 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+						href={`${langPrefix}${item.href}`}
+					>
+						{t(lang, item.labelKey as LabelKey)}
+					</a>
+				))
+			}
+		</div>
+
+		<a
+			class="hidden min-h-11 items-center rounded-full px-4 text-sm font-semibold text-white/82 transition hover:bg-white hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white lg:inline-flex"
+			href={langSwitchHref}
+		>
+			{langSwitchLabel}
+		</a>
+
+		<details class="relative lg:hidden">
+			<summary
+				class="list-none rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-r4f-navy marker:hidden"
+			>
+				{t(lang, 'navMenu')}
+			</summary>
+			<div class="absolute right-0 mt-3 w-60 rounded-2xl bg-white p-2 text-r4f-navy shadow-[0_8px_24px_rgb(0_30_69_/_18%)]">
+				{
+					navItems.map((item) => (
+						<a class="block rounded-xl px-4 py-3 text-sm font-semibold hover:bg-r4f-low" href={`${langPrefix}${item.href}`}>
+							{t(lang, item.labelKey as LabelKey)}
+						</a>
+					))
+				}
+				<a class="block rounded-xl px-4 py-3 text-sm font-semibold hover:bg-r4f-low" href={langSwitchHref}>
+					{langSwitchLabel}
+				</a>
+			</div>
+		</details>
+	</nav>
+</header>

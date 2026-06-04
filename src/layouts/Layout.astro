@@ -1,10 +1,13 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Lang } from '../lib/i18n';
 
 interface Props {
 	title?: string;
 	description?: string;
-	lang?: 'th' | 'en';
+	lang?: Lang;
 }
 
 const {
@@ -32,6 +35,10 @@ const {
 		<title>{title}</title>
 	</head>
 	<body>
-		<slot />
+		<Header lang={lang} />
+		<main>
+			<slot />
+		</main>
+		<Footer lang={lang} />
 	</body>
 </html>

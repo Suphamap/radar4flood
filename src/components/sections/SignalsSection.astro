@@ -1,0 +1,38 @@
+---
+import { t, localize } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import { projectSignals } from '../../data/signals';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+---
+
+<section class="bg-r4f-low">
+	<div class="mx-auto grid max-w-[94rem] gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[0.7fr_1fr] lg:items-start 2xl:max-w-[102rem]">
+		<div>
+			<p class="font-display text-3xl font-semibold leading-tight text-r4f-navy">
+				{t(lang, 'signalsTitle')}
+			</p>
+			<p class="mt-4 max-w-xl text-base leading-8 text-r4f-muted">
+				{t(lang, 'signalsDescription')}
+			</p>
+		</div>
+
+		<div class="grid gap-4 md:grid-cols-3">
+			{
+				projectSignals.map((item) => (
+					<div class="rounded-2xl bg-white px-5 py-5">
+						<p class="text-xs font-bold text-r4f-teal">{item.label}</p>
+						<p class="mt-3 font-display text-xl font-semibold leading-tight text-r4f-navy">
+							{item.value}
+						</p>
+						<p class="mt-3 text-sm leading-7 text-r4f-muted">{localize(item.detail, lang)}</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>

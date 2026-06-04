@@ -1,0 +1,29 @@
+---
+import { t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+
+const langPrefix = lang === 'en' ? '/en' : '';
+---
+
+<section class="mx-auto max-w-[94rem] px-5 py-16 sm:px-8 lg:py-20 2xl:max-w-[102rem]">
+	<div class="grid gap-8 rounded-2xl bg-r4f-navy px-6 py-8 text-white sm:px-8 md:grid-cols-[1fr_auto] md:items-center lg:px-10 lg:py-10">
+		<div>
+			<p class="font-display text-3xl font-semibold leading-tight">{t(lang, 'forecastCtaTitle')}</p>
+			<p class="mt-4 max-w-3xl text-base leading-8 text-white/74">
+				{t(lang, 'forecastCtaDescription')}
+			</p>
+		</div>
+		<a
+			class="inline-flex min-h-11 w-fit items-center rounded-full bg-white px-5 py-3 text-sm font-bold text-r4f-navy transition hover:bg-sky-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+			href={`${langPrefix}/radar4flood`}
+		>
+			{t(lang, 'forecastCtaButton')}
+		</a>
+	</div>
+</section>

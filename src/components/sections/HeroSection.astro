@@ -1,0 +1,145 @@
+---
+import { t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+
+interface Props {
+	lang?: Lang;
+	forecastUrl?: string;
+}
+
+const { lang = 'th', forecastUrl = '/radar4flood' } = Astro.props;
+---
+
+<section class="radar-field relative isolate overflow-hidden text-white">
+	<div class="hero-shell mx-auto grid max-w-[94rem] gap-9 px-5 pb-10 pt-14 sm:px-8 md:pb-14 md:pt-20 xl:grid-cols-[minmax(0,0.82fr)_minmax(32rem,1fr)] xl:items-end xl:gap-12 xl:pb-0 xl:pt-24 2xl:max-w-[102rem]">
+		<div class="relative z-10 max-w-2xl pb-1 xl:pb-16">
+			<p class="inline-flex rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-sky-100">
+				{t(lang, 'heroBadge')}
+			</p>
+			<h1 class="mt-5 max-w-3xl font-display text-[clamp(3rem,8vw,5.75rem)] font-semibold leading-[1.04] tracking-normal">
+				{t(lang, 'heroTitle')}
+			</h1>
+			<p class="mt-6 max-w-2xl text-xl font-medium leading-9 text-white sm:text-2xl">
+				{t(lang, 'heroSubtitle')}
+			</p>
+			<p class="mt-5 max-w-xl text-base leading-8 text-white/76">
+				{t(lang, 'heroDescription')}
+			</p>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<a
+					class="inline-flex min-h-11 items-center rounded-full bg-white px-5 py-3 text-sm font-bold text-r4f-navy transition hover:bg-sky-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+					href={forecastUrl}
+				>
+					{t(lang, 'heroForecastCta')}
+				</a>
+				<a
+					class="inline-flex min-h-11 items-center rounded-full bg-r4f-teal px-5 py-3 text-sm font-bold text-white transition hover:bg-[#086065] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+					href={lang === 'en' ? '/en/news' : '/news'}
+				>
+					{t(lang, 'heroNewsCta')}
+				</a>
+			</div>
+		</div>
+
+		<figure class="hero-media relative z-10 -mx-5 aspect-[1.16/1] overflow-hidden rounded-2xl bg-r4f-navy sm:mx-0 md:aspect-[1.36/1] xl:w-[min(53vw,53rem)] xl:max-w-none xl:justify-self-end xl:aspect-[1.18/1]">
+			<img
+				class="hero-image h-full w-full object-cover object-center"
+				src="/images/radar4flood-field-radar.png"
+				alt="สถานีเรดาร์ใกล้พื้นที่น้ำและทีมงานภาคสนามของโครงการ Radar4Flood"
+				width="1824"
+				height="863"
+				loading="eager"
+				fetchpriority="high"
+			/>
+			<div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-r4f-navy/82 via-r4f-navy/24 to-transparent"></div>
+			<div
+				class="signal-sweep absolute right-[9%] top-[15%] h-48 w-48 rounded-full border border-sky-200/30 bg-sky-200/8 sm:h-56 sm:w-56"
+				aria-hidden="true"
+			></div>
+			<figcaption class="absolute bottom-5 left-5 max-w-sm rounded-xl bg-[rgb(0_30_69_/_84%)] px-4 py-3 text-sm leading-6 text-white/84 backdrop-blur">
+				{t(lang, 'heroCaption')}
+			</figcaption>
+		</figure>
+	</div>
+</section>
+
+<style>
+	.radar-field {
+		background-color: var(--color-r4f-navy);
+		background-image:
+			linear-gradient(90deg, rgb(0 17 44 / 72%) 0%, rgb(0 30 69 / 38%) 52%, rgb(0 20 54 / 26%) 100%),
+			url("/radar4flood-hero-background.svg");
+		background-position: center top;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.radar-field::before {
+		position: absolute;
+		inset: 0;
+		content: "";
+		background: linear-gradient(180deg, rgb(0 17 44 / 16%) 0%, rgb(0 17 44 / 0%) 46%, rgb(0 17 44 / 28%) 100%);
+		pointer-events: none;
+	}
+
+	.hero-shell {
+		min-height: min(48rem, calc(100svh - 4.25rem));
+	}
+
+	.hero-media {
+		align-self: center;
+		max-height: min(32rem, calc(100svh - 10rem));
+		box-shadow: 0 24px 42px rgb(0 10 28 / 18%);
+	}
+
+	@media (min-width: 1024px) and (max-height: 1100px) and (orientation: landscape) {
+		.hero-shell {
+			min-height: auto;
+		}
+
+		.hero-media {
+			align-self: start;
+		}
+	}
+
+	.hero-image {
+		filter: brightness(1.14) contrast(1.08) saturate(1.08);
+		transform: scale(1.01);
+	}
+
+	.signal-sweep {
+		animation: signal-sweep 7s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+		transform-origin: 64% 50%;
+	}
+
+	@keyframes signal-sweep {
+		0% {
+			transform: rotate(-8deg);
+			opacity: 0.16;
+		}
+		48% {
+			opacity: 0.36;
+		}
+		100% {
+			transform: rotate(24deg);
+			opacity: 0.12;
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.radar-field {
+			background-position: 58% top;
+		}
+
+		.hero-shell {
+			min-height: 0;
+		}
+
+		.hero-media {
+			aspect-ratio: auto;
+			width: calc(100% + 2.5rem);
+			height: clamp(16rem, 34svh, 22rem);
+			max-height: none;
+		}
+	}
+</style>
