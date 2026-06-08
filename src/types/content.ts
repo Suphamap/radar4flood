@@ -17,6 +17,17 @@ export interface ProjectSignal {
 	detail: BilingualText;
 }
 
+export type NewsCategory = 'Announcement' | 'Work Update' | 'Event' | 'Publication' | 'Project Milestone';
+
+export type NewsArchiveSection = 'top' | 'latest' | 'highlight' | 'more';
+
+export interface NewsImage {
+	src: string;
+	alt: BilingualText;
+	width?: number;
+	height?: number;
+}
+
 /**
  * A news post summary used in listing cards and homepage previews.
  * Matches the Sanity `post` schema shape for easy migration.
@@ -25,10 +36,13 @@ export interface NewsItem {
 	slug: string;
 	title: BilingualText;
 	excerpt: BilingualText;
-	category: string;
+	category: NewsCategory;
 	publishedAt: string;
 	href: string;
+	image?: NewsImage;
 	featured?: boolean;
+	archiveSection?: NewsArchiveSection;
+	isToday?: boolean;
 }
 
 /**
