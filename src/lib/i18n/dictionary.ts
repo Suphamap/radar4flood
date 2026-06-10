@@ -62,6 +62,11 @@ const th = {
 	newsMissingTitle: 'ไม่พบข่าวที่ต้องการ',
 	newsMissingDescription: 'ข่าวนี้อาจถูกย้าย ลบออก หรือยังไม่ได้เผยแพร่ในเว็บไซต์',
 
+	// News detail
+	newsDetailGallery: 'ภาพประกอบเพิ่มเติม',
+	newsDetailAboutAuthor: 'เกี่ยวกับผู้เขียน',
+	newsDetailThaiOnly: 'บทความนี้มีให้อ่านเป็นภาษาไทยเท่านั้น',
+
 	// Categories
 	categoryAnnouncement: 'ประกาศ',
 	categoryWorkUpdate: 'อัปเดตงาน',
