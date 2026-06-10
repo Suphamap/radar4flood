@@ -1,0 +1,44 @@
+---
+import type { NewsAuthor } from '../../types/content';
+import type { Lang } from '../../lib/i18n';
+import { localize, t } from '../../lib/i18n';
+
+interface Props {
+	author: NewsAuthor;
+	lang: Lang;
+}
+
+const { author, lang } = Astro.props;
+const bio = localize({ th: author.bioTh, en: author.bioEn }, lang);
+---
+
+<section>
+	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-r4f-muted">
+		{t(lang, 'newsDetailAboutAuthor')}
+	</p>
+	<div class="flex gap-5 rounded-2xl bg-r4f-card p-6 sm:p-7">
+		{
+			author.image ? (
+				<img
+					src={author.image}
+					alt={author.name}
+					width={64}
+					height={64}
+					class="h-16 w-16 shrink-0 rounded-full object-cover"
+				/>
+			) : (
+				<div
+					class="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-r4f-low text-lg font-bold text-r4f-teal"
+					aria-hidden="true"
+				>
+					{author.name.charAt(0)}
+				</div>
+			)
+		}
+		<div class="min-w-0">
+			<p class="text-base font-semibold text-r4f-navy">{author.name}</p>
+			<p class="mt-0.5 text-sm text-r4f-muted">{author.role}</p>
+			{bio && <p class="mt-3 text-sm leading-7 text-r4f-ink">{bio}</p>}
+		</div>
+	</div>
+</section>
