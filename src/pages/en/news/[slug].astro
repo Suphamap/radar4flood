@@ -1,0 +1,11 @@
+---
+import { newsItems } from '../../../data/news';
+
+export function getStaticPaths() {
+	return newsItems.map((item) => ({
+		params: { slug: item.slug },
+	}));
+}
+
+return Astro.rewrite(`/news/${Astro.params.slug}`);
+---
