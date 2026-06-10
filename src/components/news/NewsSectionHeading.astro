@@ -1,4 +1,5 @@
 ---
+import { routeHref, t } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 
 interface Props {
@@ -9,8 +10,7 @@ interface Props {
 }
 
 const { title, lang = 'th', showAllButton = true, href } = Astro.props;
-const viewAllLabel = lang === 'en' ? 'View all' : 'ดูทั้งหมด';
-const archiveHref = href ?? (lang === 'en' ? '/en/news' : '/news');
+const archiveHref = href ?? routeHref(lang, 'news');
 ---
 
 <div class="flex items-center justify-between gap-5">
@@ -22,7 +22,7 @@ const archiveHref = href ?? (lang === 'en' ? '/en/news' : '/news');
 				href={archiveHref}
 				data-show-all-news
 			>
-				{viewAllLabel}
+				{t(lang, 'newsViewAllShort')}
 				<span aria-hidden="true">→</span>
 			</a>
 		)

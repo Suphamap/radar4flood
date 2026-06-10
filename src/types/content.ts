@@ -26,6 +26,7 @@ export interface NewsImage {
 	alt: BilingualText;
 	width?: number;
 	height?: number;
+	caption?: BilingualText;
 }
 
 /**
@@ -38,7 +39,6 @@ export interface NewsItem {
 	excerpt: BilingualText;
 	category: NewsCategory;
 	publishedAt: string;
-	href: string;
 	image?: NewsImage;
 	featured?: boolean;
 	archiveSection?: NewsArchiveSection;

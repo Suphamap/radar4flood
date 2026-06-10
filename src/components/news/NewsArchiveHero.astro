@@ -1,4 +1,5 @@
 ---
+import { routeHref, t } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import type { NewsCategory } from '../../types/content';
 
@@ -13,30 +14,7 @@ interface Props {
 }
 
 const { lang = 'th', browseItems } = Astro.props;
-const archiveHref = lang === 'en' ? '/en/news' : '/news';
-
-const copy = {
-	th: {
-		title: 'ข่าวและความก้าวหน้า',
-		intro:
-			'คลังข่าวและงานวิจัยด้านอุทกภัยจากภาคีเครือข่ายนักวิจัยและหน่วยงาน เพื่อการตัดสินใจบนฐานข้อมูลและวิทยาศาสตร์',
-		searchLabel: 'Search News',
-		searchPlaceholder: 'ค้นหาข่าว งานวิจัย โครงการ หรือคำสำคัญ...',
-		searchButton: 'ค้นหา',
-		browseLabel: 'Browse',
-		all: 'ทั้งหมด',
-	},
-	en: {
-		title: 'News & Progress',
-		intro:
-			'A research news archive for flood, radar, and field collaboration updates, written for evidence-based public understanding.',
-		searchLabel: 'Search News',
-		searchPlaceholder: 'Search news, research, projects, or keywords...',
-		searchButton: 'Search',
-		browseLabel: 'Browse',
-		all: 'All',
-	},
-}[lang];
+const archiveHref = routeHref(lang, 'news');
 ---
 
 <section class="news-hero relative isolate overflow-hidden bg-r4f-navy text-white">
@@ -45,14 +23,14 @@ const copy = {
 	>
 		<div class="relative z-10 max-w-3xl">
 			<h1 class="font-display text-[clamp(2.9rem,7vw,5.75rem)] font-semibold leading-[1.04] tracking-normal">
-				{copy.title}
+				{t(lang, 'newsArchiveTitle')}
 			</h1>
 			<p class="mt-5 max-w-2xl text-base leading-8 text-white/82 sm:text-lg sm:leading-9">
-				{copy.intro}
+				{t(lang, 'newsArchiveIntro')}
 			</p>
 
 			<form class="mt-8 max-w-2xl" role="search" method="get" action={archiveHref} data-news-search-form>
-				<label class="text-sm font-bold text-white" for="news-search">{copy.searchLabel}</label>
+				<label class="text-sm font-bold text-white" for="news-search">{t(lang, 'newsArchiveSearchLabel')}</label>
 				<div class="mt-3 flex flex-col gap-3 rounded-2xl bg-white p-2 sm:flex-row sm:items-center">
 					<div class="flex min-h-12 flex-1 items-center gap-3 px-3 text-r4f-ink">
 						<svg class="h-5 w-5 shrink-0 text-r4f-teal" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -69,7 +47,7 @@ const copy = {
 							type="search"
 							name="q"
 							autocomplete="off"
-							placeholder={copy.searchPlaceholder}
+							placeholder={t(lang, 'newsArchiveSearchPlaceholder')}
 							data-news-search
 						/>
 					</div>
@@ -77,23 +55,23 @@ const copy = {
 						class="inline-flex min-h-12 items-center justify-center rounded-xl bg-r4f-sky px-6 text-sm font-bold text-white transition hover:bg-[#277fd0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
 						type="submit"
 					>
-						{copy.searchButton}
+						{t(lang, 'newsArchiveSearchButton')}
 					</button>
 				</div>
 			</form>
 		</div>
 
 		<div class="relative z-10 lg:pb-4">
-			<p class="text-base font-bold text-white">{copy.browseLabel}</p>
-			<div class="mt-5 flex flex-wrap gap-x-6 gap-y-3" aria-label={copy.browseLabel}>
+			<p class="text-base font-bold text-white">{t(lang, 'newsArchiveBrowseLabel')}</p>
+			<div class="mt-5 flex flex-wrap gap-x-6 gap-y-3" aria-label={t(lang, 'newsArchiveBrowseLabel')}>
 				<a
 					class="browse-filter text-left text-sm font-bold text-sky-100 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
 					href={archiveHref}
 					data-news-filter="all"
-					data-news-filter-label={copy.all}
+					data-news-filter-label={t(lang, 'newsArchiveAll')}
 					aria-pressed="true"
 				>
-					{copy.all}
+					{t(lang, 'newsArchiveAll')}
 					<span aria-hidden="true">›</span>
 				</a>
 				{

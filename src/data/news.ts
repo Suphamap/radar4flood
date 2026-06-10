@@ -1,32 +1,28 @@
 import type { NewsCategory, NewsItem } from '../types/content';
 
 /**
- * Temporary mock news posts for the homepage preview and news archive.
+ * Temporary mock news posts for the homepage preview and news archive listing.
  * The shape follows the planned Sanity `post` document closely so this data
  * can be replaced by GROQ results without redesigning the archive UI.
  */
 export const newsItems: NewsItem[] = [
 	{
-		slug: 'x-band-radar-chiang-rai-launch',
-		category: 'Work Update',
+		slug: 'arda-ipitex-2026-awards',
+		category: 'Publication',
 		title: {
-			th: 'เปิดใช้งานเรดาร์ตรวจฝน X-Band สถานีเชียงราย เพื่อยกระดับการเฝ้าระวังน้ำท่วมในลุ่มน้ำโขงตอนบน',
-			en: 'X-Band radar station in Chiang Rai begins operation for upper Mekong flood monitoring',
+			th: 'ARDA พางานวิจัยเกษตรไทยคว้า 6 รางวัล บนเวทีโลก IPITEx 2026',
 		},
 		excerpt: {
-			th: 'เรดาร์ตรวจฝนความถี่ X-Band แห่งใหม่ที่ อ.เชียงแสน จ.เชียงราย พร้อมสนับสนุนการคาดการณ์ฝนเชิงพื้นที่ความละเอียดสูงและแจ้งเตือนล่วงหน้าได้แม่นยำยิ่งขึ้น',
-			en: 'The new X-Band weather radar in Chiang Saen, Chiang Rai supports high-resolution rainfall estimation and more precise early warning workflows.',
+			th: 'สำนักงานพัฒนาการวิจัยการเกษตร (องค์การมหาชน) ส่งผลงานวิจัย สิ่งประดิษฐ์ และนวัตกรรมเข้าร่วมงาน IPITEx 2026 พร้อมคว้ารางวัลรวม 6 รางวัล โดยมี Radar4Flood เป็นหนึ่งในผลงานที่ได้รับ Silver Medal Award',
 		},
-		publishedAt: '2025-05-20',
-		href: '/news/x-band-radar-chiang-rai-launch',
+		publishedAt: '2026-01-09',
 		image: {
-			src: '/images/radar4flood-field-radar.png',
+			src: '/images/news/arda-ipitex-2026/main.JPG',
 			alt: {
-				th: 'ทีมงาน Radar4Flood ตรวจสอบสถานีเรดาร์ใกล้แหล่งน้ำในพื้นที่ภาคสนาม',
-				en: 'Radar4Flood field team inspecting a radar station beside a waterway',
+				th: 'ภาพหลักข่าว ARDA และผลงานวิจัยเกษตรไทยบนเวที IPITEx 2026',
 			},
-			width: 1824,
-			height: 863,
+			width: 1369,
+			height: 1027,
 		},
 		featured: true,
 		archiveSection: 'top',
@@ -43,7 +39,6 @@ export const newsItems: NewsItem[] = [
 			en: 'Higher spatial detail and processing improvements strengthen rainfall and flash-flood forecast quality.',
 		},
 		publishedAt: '2025-05-20',
-		href: '/news/wrf-roms-v2-update',
 		image: {
 			src: '/images/Radar4flood_Horizon_PNG.png',
 			alt: {
@@ -68,7 +63,6 @@ export const newsItems: NewsItem[] = [
 			en: 'The workshop strengthened practical use of radar data and tools for local agencies and project partners.',
 		},
 		publishedAt: '2025-05-20',
-		href: '/news/radar4flood-training-workshop',
 		image: {
 			src: '/images/radar4flood-field-radar.png',
 			alt: {
@@ -82,30 +76,6 @@ export const newsItems: NewsItem[] = [
 		isToday: true,
 	},
 	{
-		slug: 'watershed-risk-assessment-report',
-		category: 'Publication',
-		title: {
-			th: 'รายงานวิจัย: การประเมินความเสี่ยงน้ำท่วมด้วยข้อมูลเรดาร์และดาวเทียม',
-			en: 'Research report on flood risk assessment using radar and satellite data',
-		},
-		excerpt: {
-			th: 'นำเสนอแนวทางการบูรณาการข้อมูลหลายแหล่ง เพื่อประเมินความเสี่ยงน้ำท่วมในระดับลุ่มน้ำ',
-			en: 'The report outlines multi-source data integration for basin-level flood risk assessment.',
-		},
-		publishedAt: '2025-05-19',
-		href: '/news/watershed-risk-assessment-report',
-		image: {
-			src: '/images/Radar4flood_Horizon_PNG.png',
-			alt: {
-				th: 'ภาพปกเอกสารรายงานวิจัยของโครงการ Radar4Flood',
-				en: 'Radar4Flood report cover graphic for a flood risk assessment publication',
-			},
-			width: 1200,
-			height: 675,
-		},
-		archiveSection: 'latest',
-	},
-	{
 		slug: 'station-maintenance-survey',
 		category: 'Work Update',
 		title: {
@@ -117,7 +87,6 @@ export const newsItems: NewsItem[] = [
 			en: 'The field team inspected station equipment and surroundings to maintain rainfall data quality.',
 		},
 		publishedAt: '2025-05-18',
-		href: '/news/station-maintenance-survey',
 		archiveSection: 'highlight',
 	},
 	{
@@ -132,7 +101,6 @@ export const newsItems: NewsItem[] = [
 			en: 'Progress update on installation and data connectivity across target station areas.',
 		},
 		publishedAt: '2025-05-17',
-		href: '/news/national-radar-network-phase-two',
 		archiveSection: 'highlight',
 	},
 	{
@@ -147,22 +115,6 @@ export const newsItems: NewsItem[] = [
 			en: 'The display now prioritizes readings for disaster prevention and mitigation workflows.',
 		},
 		publishedAt: '2025-05-15',
-		href: '/news/display-template-water-level',
-		archiveSection: 'highlight',
-	},
-	{
-		slug: 'field-radar-manual',
-		category: 'Publication',
-		title: {
-			th: 'คู่มือการใช้ข้อมูลเรดาร์ตรวจฝนสำหรับงานป้องกันและบรรเทาอุทกภัย',
-			en: 'Manual for using rainfall radar data in flood prevention work',
-		},
-		excerpt: {
-			th: 'จัดทำคำอธิบายการอ่านข้อมูลเรดาร์และตัวอย่างการประยุกต์ใช้สำหรับเจ้าหน้าที่',
-			en: 'A practical guide to reading radar data and applying it in agency workflows.',
-		},
-		publishedAt: '2025-05-14',
-		href: '/news/field-radar-manual',
 		archiveSection: 'highlight',
 	},
 	{
@@ -177,7 +129,6 @@ export const newsItems: NewsItem[] = [
 			en: 'Radar4Flood service will be temporarily unavailable on 18 May 2025 from 02:00-06:00 for maintenance.',
 		},
 		publishedAt: '2025-05-13',
-		href: '/news/temporary-service-maintenance',
 		archiveSection: 'more',
 	},
 	{
@@ -192,7 +143,6 @@ export const newsItems: NewsItem[] = [
 			en: 'The new station expands early-warning coverage in flood-prone areas.',
 		},
 		publishedAt: '2025-05-12',
-		href: '/news/automatic-water-level-sensor',
 		image: {
 			src: '/images/radar4flood-field-radar.png',
 			alt: {
@@ -202,36 +152,6 @@ export const newsItems: NewsItem[] = [
 			width: 1824,
 			height: 863,
 		},
-		archiveSection: 'more',
-	},
-	{
-		slug: 'flood-risk-nan-model',
-		category: 'Publication',
-		title: {
-			th: 'การประเมินความเสี่ยงน้ำท่วมด้วยแบบจำลองน้ำท่า',
-			en: 'Flood risk assessment using runoff modelling',
-		},
-		excerpt: {
-			th: 'เปรียบเทียบผลการจำลองสถานการณ์ฝนหนักและแนวทางลดผลกระทบในพื้นที่ลุ่มน้ำพระยา',
-			en: 'A comparison of heavy-rainfall simulations and mitigation approaches in a river basin context.',
-		},
-		publishedAt: '2025-05-10',
-		href: '/news/flood-risk-nan-model',
-		archiveSection: 'more',
-	},
-	{
-		slug: 'monthly-water-summary-2025-1',
-		category: 'Publication',
-		title: {
-			th: 'เอกสารสรุปสำหรับผู้บริหาร: สถานการณ์น้ำประเทศไทย ไตรมาส 1/2568',
-			en: 'Executive brief: Thailand water situation, Q1 2025',
-		},
-		excerpt: {
-			th: 'สรุปภาพรวมปริมาณฝน แหล่งน้ำ และความเสี่ยงอุทกภัยในภาพรวม',
-			en: 'A concise overview of rainfall, water resources, and flood risk for the first quarter.',
-		},
-		publishedAt: '2025-05-09',
-		href: '/news/monthly-water-summary-2025-1',
 		archiveSection: 'more',
 	},
 	{
@@ -246,7 +166,6 @@ export const newsItems: NewsItem[] = [
 			en: 'A knowledge-sharing forum on flood and water management in Thailand, 12-13 June 2025 in Khon Kaen.',
 		},
 		publishedAt: '2025-05-08',
-		href: '/news/radar4flood-forum-2025',
 		archiveSection: 'more',
 	},
 	{
@@ -261,7 +180,6 @@ export const newsItems: NewsItem[] = [
 			en: 'Research proposals in flood and climate topics are open for submission until 30 June 2025.',
 		},
 		publishedAt: '2025-05-07',
-		href: '/news/annual-research-proposal-2568',
 		archiveSection: 'more',
 	},
 ];

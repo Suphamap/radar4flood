@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsArchiveHero from '../news/NewsArchiveHero.astro';
+import NewsCard from '../news/NewsCard.astro';
+import NewsSectionHeading from '../news/NewsSectionHeading.astro';
+import { getNewsBySection, newsCategories, newsItems } from '../../data/news';
+import { routePath, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import type { NewsCategory } from '../../types/content';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+
+const categoryLabels: Record<NewsCategory, string> = {
+	Announcement: t(lang, 'categoryAnnouncement'),
+	'Work Update': t(lang, 'categoryWorkUpdate'),
+	Event: t(lang, 'categoryEvent'),
+	Publication: t(lang, 'categoryPublication'),
+	'Project Milestone': t(lang, 'categoryProjectMilestone'),
+};
+
+const browseItems = newsCategories.map((category) => ({
+	value: category,
+	label: categoryLabels[category],
+}));
+
+const topNews = getNewsBySection('top');
+const latestNews = getNewsBySection('latest');
+const todayNews = [...topNews, ...latestNews];
+const highlights = getNewsBySection('highlight');
+const moreNews = getNewsBySection('more');
+const listNews = [...highlights, ...moreNews, ...latestNews, ...topNews];
+const allNewsHref = routePath(lang, '/news?view=all');
+---
+
+<Layout title={t(lang, 'newsMetaTitle')} description={t(lang, 'newsMetaDescription')} lang={lang}>
+	<div
+		data-news-archive
+		data-news-all-title={t(lang, 'newsArchiveAllTitle')}
+		data-news-kicker={t(lang, 'newsArchiveKicker')}
+		data-news-search-kicker={t(lang, 'newsArchiveSearchResultsKicker')}
+		data-news-search-title={t(lang, 'newsArchiveSearchResultsTitle')}
+		data-news-browse-kicker={t(lang, 'newsArchiveBrowseKicker')}
+	>
+		<NewsArchiveHero lang={lang} browseItems={browseItems} />
+
+		<section class="bg-r4f-surface" data-default-news-section>
+			<div class="mx-auto max-w-[94rem] px-5 py-9 sm:px-8 lg:py-12 2xl:max-w-[102rem]">
+				<div data-news-section>
+					<NewsSectionHeading title={t(lang, 'newsArchiveTopTitle')} lang={lang} href={allNewsHref} />
+					<div class="mt-5">
+						{topNews.map((item) => <NewsCard item={item} lang={lang} variant="featured" />)}
+						<p class="hidden rounded-2xl bg-r4f-low p-8 text-r4f-muted" data-news-empty>
+							{t(lang, 'newsArchiveEmpty')}
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="bg-r4f-surface" data-default-news-section>
+			<div class="mx-auto max-w-[94rem] px-5 pb-9 sm:px-8 lg:pb-12 2xl:max-w-[102rem]">
+				<div data-news-section>
+					<NewsSectionHeading title={t(lang, 'newsArchiveLatestTitle')} lang={lang} href={allNewsHref} />
+					<div class="mt-5 grid gap-5 lg:grid-cols-3">
+						{todayNews.map((item) => <NewsCard item={item} lang={lang} variant="latest" />)}
+					</div>
+					<p class="mt-5 hidden rounded-2xl bg-r4f-low p-8 text-r4f-muted" data-news-empty>
+						{t(lang, 'newsArchiveEmpty')}
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="hidden bg-r4f-surface" data-news-results-section>
+			<div class="mx-auto max-w-[94rem] px-5 py-10 sm:px-8 lg:py-14 2xl:max-w-[102rem]">
+				<div data-news-section>
+					<div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+						<div>
+							<p class="text-sm font-semibold text-r4f-teal" data-news-results-kicker>
+								{t(lang, 'newsArchiveKicker')}
+							</p>
+							<h2
+								class="font-display text-2xl font-semibold leading-tight text-r4f-navy sm:text-[1.7rem]"
+								data-news-results-title
+							>
+								{t(lang, 'newsArchiveAllTitle')}
+							</h2>
+						</div>
+						<a
+							class="inline-flex min-h-10 w-fit items-center gap-2 rounded-full px-2 text-sm font-bold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+							href={allNewsHref}
+						>
+							{t(lang, 'newsViewAllShort')}
+							<span aria-hidden="true">→</span>
+						</a>
+					</div>
+
+					<div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+						{newsItems.map((item) => <NewsCard item={item} lang={lang} variant="archive" />)}
+					</div>
+					<p class="mt-5 hidden rounded-2xl bg-r4f-low p-8 text-r4f-muted" data-news-empty>
+						{t(lang, 'newsArchiveEmpty')}
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="bg-r4f-surface" data-default-news-section>
+			<div class="mx-auto max-w-[94rem] px-5 py-10 sm:px-8 lg:py-14 2xl:max-w-[102rem]">
+				<div data-news-section data-all-news-list>
+					<NewsSectionHeading title={t(lang, 'newsArchiveMoreTitle')} lang={lang} href={allNewsHref} />
+					<div class="mt-5 grid gap-5 lg:grid-cols-2">
+						{
+							listNews.map((item, index) => (
+								<NewsCard item={item} lang={lang} variant="compact" extraMore={index > 3} />
+							))
+						}
+					</div>
+					<p class="mt-5 hidden rounded-2xl bg-r4f-low p-8 text-r4f-muted" data-news-empty>
+						{t(lang, 'newsArchiveEmpty')}
+					</p>
+
+					<div class="mt-7 flex justify-center">
+						<a
+							class="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-6 text-sm font-bold text-r4f-teal outline outline-1 outline-r4f-line transition hover:text-r4f-navy focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+							href={allNewsHref}
+							data-load-more
+						>
+							<span aria-hidden="true">⌄</span>
+							{t(lang, 'newsArchiveLoadMore')}
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</Layout>
+
+<script>
+	const archive = document.querySelector<HTMLElement>('[data-news-archive]');
+
+	if (archive) {
+		const searchInput = archive.querySelector<HTMLInputElement>('[data-news-search]');
+		const filterLinks = Array.from(archive.querySelectorAll<HTMLElement>('[data-news-filter]'));
+		const defaultSections = Array.from(archive.querySelectorAll<HTMLElement>('[data-default-news-section]'));
+		const resultsSection = archive.querySelector<HTMLElement>('[data-news-results-section]');
+		const resultsTitle = archive.querySelector<HTMLElement>('[data-news-results-title]');
+		const resultsKicker = archive.querySelector<HTMLElement>('[data-news-results-kicker]');
+		const defaultCards = defaultSections.flatMap((section) =>
+			Array.from(section.querySelectorAll<HTMLElement>('[data-news-card]')),
+		);
+		const resultCards = resultsSection
+			? Array.from(resultsSection.querySelectorAll<HTMLElement>('[data-news-card]'))
+			: [];
+		const sections = Array.from(archive.querySelectorAll<HTMLElement>('[data-news-section]'));
+		const loadMoreLink = archive.querySelector<HTMLElement>('[data-load-more]');
+		const params = new URLSearchParams(window.location.search);
+		const showAllNews = params.get('view') === 'all';
+		let activeCategory = params.get('category') ?? 'all';
+		let activeCategoryLabel = archive.dataset.newsAllTitle ?? 'All News';
+
+		const normalize = (value: string) => value.toLocaleLowerCase().trim();
+
+		const applyFilters = () => {
+			const query = normalize(searchInput?.value ?? '');
+			const isFocusedFilter = showAllNews || activeCategory !== 'all' || query.length > 0;
+			const activeCards = isFocusedFilter ? resultCards : defaultCards;
+
+			defaultSections.forEach((section) => {
+				section.classList.toggle('hidden', isFocusedFilter);
+			});
+
+			resultsSection?.classList.toggle('hidden', !isFocusedFilter);
+
+			if (resultsTitle && resultsKicker) {
+				if (query.length > 0) {
+					resultsKicker.textContent = archive.dataset.newsSearchKicker ?? 'Search Results';
+					resultsTitle.textContent = `${archive.dataset.newsSearchTitle ?? 'Results for'} "${searchInput?.value.trim()}"`;
+				} else if (activeCategory !== 'all') {
+					resultsKicker.textContent = archive.dataset.newsBrowseKicker ?? 'Browse';
+					resultsTitle.textContent = activeCategoryLabel;
+				} else {
+					resultsKicker.textContent = archive.dataset.newsKicker ?? 'News Archive';
+					resultsTitle.textContent = archive.dataset.newsAllTitle ?? 'All News';
+				}
+			}
+
+			activeCards.forEach((card) => {
+				const matchesCategory = activeCategory === 'all' || card.dataset.category === activeCategory;
+				const matchesSearch = query.length === 0 || normalize(card.dataset.search ?? '').includes(query);
+				const isExtraMore = card.dataset.extraMore === 'true';
+				card.hidden = !matchesCategory || !matchesSearch || (!isFocusedFilter && isExtraMore);
+			});
+
+			sections.forEach((section) => {
+				const sectionCards = Array.from(section.querySelectorAll<HTMLElement>('[data-news-card]'));
+				const emptyState = section.querySelector('[data-news-empty]');
+				const visibleCount = sectionCards.filter((card) => !card.hidden).length;
+				if (emptyState) {
+					emptyState.classList.toggle('hidden', visibleCount > 0);
+				}
+			});
+
+			if (loadMoreLink) {
+				loadMoreLink.classList.toggle('hidden', isFocusedFilter);
+			}
+		};
+
+		if (searchInput) {
+			searchInput.value = params.get('q') ?? '';
+		}
+
+		filterLinks.forEach((link) => {
+			const isActive = (link.dataset.newsFilter ?? 'all') === activeCategory;
+			link.setAttribute('aria-pressed', String(isActive));
+			if (isActive) {
+				activeCategoryLabel = link.dataset.newsFilterLabel ?? activeCategory;
+			}
+		});
+
+		applyFilters();
+	}
+</script>

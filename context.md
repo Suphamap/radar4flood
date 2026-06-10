@@ -191,15 +191,18 @@ Notes:
 
 ## Bilingual Strategy
 
-Thai is the default site language. English should be available for visitors who need it.
+Thai is the default site language. English route structure should be prepared for visitors who need it later, but full English translation is deferred until the final content stage.
 
 Implementation guidance:
 
 - Thai routes live at root paths.
 - English routes live under `/en`.
+- Until final translation, do not maintain translated English page files or UI copy.
+- Use Astro rewrite-based fallback shims so English routes render the Thai page content instead of 404s.
+- Prefer `Astro.rewrite()` for temporary `/en/...` pages so the URL can exist while showing Thai fallback content.
 - UI labels live in a small dictionary such as `src/lib/i18n/`.
 - CMS-managed documents contain Thai and English fields in the same Sanity document.
-- If English content is missing, show an explicit fallback instead of breaking the page.
+- English fields may exist in typed data and Sanity schemas, but the live site should prefer Thai fallback until the translation pass is approved.
 - Keep the navbar language-aware.
 - Avoid a complicated localization framework unless the project grows to require it.
 

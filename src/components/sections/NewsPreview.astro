@@ -1,7 +1,8 @@
 ---
-import { t, localize } from '../../lib/i18n';
+import { t, localize, routePath } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import { newsItems } from '../../data/news';
+import type { NewsCategory } from '../../types/content';
 
 interface Props {
 	lang?: Lang;
@@ -9,10 +10,15 @@ interface Props {
 
 const { lang = 'th' } = Astro.props;
 
-const langPrefix = lang === 'en' ? '/en' : '';
-const archiveHref = (slug: string) => `${langPrefix}/news#${slug}`;
-const allNewsHref = `${langPrefix}/news?view=all`;
+const allNewsHref = routePath(lang, '/news?view=all');
 const previewItems = newsItems.slice(0, 3);
+const categoryLabels: Record<NewsCategory, string> = {
+	Announcement: t(lang, 'categoryAnnouncement'),
+	'Work Update': t(lang, 'categoryWorkUpdate'),
+	Event: t(lang, 'categoryEvent'),
+	Publication: t(lang, 'categoryPublication'),
+	'Project Milestone': t(lang, 'categoryProjectMilestone'),
+};
 ---
 
 <section id="news" class="mx-auto max-w-[94rem] px-5 py-16 sm:px-8 lg:py-24 2xl:max-w-[102rem]">
@@ -42,9 +48,14 @@ const previewItems = newsItems.slice(0, 3);
 					class:list={[
 						'overflow-hidden transition duration-200 hover:-translate-y-0.5',
 						index === 0
-							? 'min-h-[27rem] rounded-2xl bg-[linear-gradient(180deg,_rgb(0_30_69_/_4%)_0%,_rgb(0_30_69_/_88%)_100%),url(/images/radar4flood-field-radar.png)] bg-cover bg-center p-6 text-white sm:p-8 lg:row-span-2'
+							? 'min-h-[27rem] rounded-2xl bg-cover bg-center p-6 text-white sm:p-8 lg:row-span-2'
 							: 'rounded-2xl bg-r4f-low p-6 sm:p-7 lg:min-h-[15rem]',
 					]}
+					style={
+						index === 0
+							? `background-image: linear-gradient(180deg, rgb(0 30 69 / 4%) 0%, rgb(0 30 69 / 88%) 100%), url(${item.image?.src ?? '/images/radar4flood-field-radar.png'});`
+							: undefined
+					}
 				>
 					<div class:list={[index === 0 ? 'flex h-full max-w-2xl flex-col justify-end' : 'max-w-xl']}>
 						<div class="mb-5 flex flex-wrap items-center gap-3">
@@ -54,7 +65,7 @@ const previewItems = newsItems.slice(0, 3);
 									index === 0 ? 'bg-white text-r4f-navy' : 'bg-white text-r4f-teal',
 								]}
 							>
-								{item.category}
+								{categoryLabels[item.category]}
 							</span>
 							<span class:list={['text-sm font-medium', index === 0 ? 'text-white/76' : 'text-r4f-muted']}>
 								{item.publishedAt}
@@ -66,12 +77,7 @@ const previewItems = newsItems.slice(0, 3);
 								index === 0 ? 'text-3xl sm:text-4xl' : 'text-2xl text-r4f-navy',
 							]}
 						>
-							<a
-								class="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
-								href={archiveHref(item.slug)}
-							>
-								{localize(item.title, lang)}
-							</a>
+							{localize(item.title, lang)}
 						</h3>
 						<p class:list={['news-preview-excerpt mt-4 leading-7', index === 0 ? 'text-white/80' : 'text-r4f-muted']}>
 							{localize(item.excerpt, lang)}

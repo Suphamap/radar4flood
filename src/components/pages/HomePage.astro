@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HeroSection from '../sections/HeroSection.astro';
+import SignalsSection from '../sections/SignalsSection.astro';
+import NewsPreview from '../sections/NewsPreview.astro';
+import PublicationPreview from '../sections/PublicationPreview.astro';
+import ForecastCTA from '../sections/ForecastCTA.astro';
+import { routeHref, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+const forecastUrl = import.meta.env.PUBLIC_FORECAST_URL || routeHref(lang, 'radar4flood');
+---
+
+<Layout title={t(lang, 'homeMetaTitle')} description={t(lang, 'homeMetaDescription')} lang={lang}>
+	<HeroSection lang={lang} forecastUrl={forecastUrl} />
+	<SignalsSection lang={lang} />
+	<NewsPreview lang={lang} />
+	<PublicationPreview lang={lang} />
+	<ForecastCTA lang={lang} />
+</Layout>

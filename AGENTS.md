@@ -23,7 +23,7 @@ Preserve these unless the project owner explicitly changes them:
 - Sanity CMS
 - Netlify hosting
 - Thai as the default language
-- English support for UI and content
+- English route support through Astro rewrite fallback until final translation
 - Confirmed navbar order: Home, Radar4Flood, News, Publication, Staff, Contact Us
 
 Do not replace Sanity, add a custom backend, add public authentication, rebuild the forecast interface, or add a public contact form unless explicitly requested.
@@ -59,6 +59,8 @@ Do not create one-off components, duplicated language-specific components, scatt
 - Use TypeScript types for Sanity results, mock data, and shared helpers.
 - If using mock data, keep it typed and easy to migrate into Sanity.
 - Keep UI labels language-aware through the i18n layer instead of hardcoding duplicated Thai/English strings.
+- Do not add or maintain translated English UI/content copy until the final translation stage is explicitly requested.
+- Keep `/en` route structure ready through Astro rewrite fallback, with English routes falling back to Thai content.
 - Keep GROQ queries centralized in Sanity utility files.
 - Do not expose private tokens to client-side code.
 

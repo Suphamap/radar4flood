@@ -1,5 +1,5 @@
 ---
-import { t } from '../lib/i18n';
+import { alternateRoutePath, routePath, t } from '../lib/i18n';
 import type { Lang } from '../lib/i18n';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 const { lang = 'th' } = Astro.props;
 
-const langPrefix = lang === 'en' ? '/en' : '';
+const langSwitchHref = alternateRoutePath(lang, Astro.url.pathname);
 ---
 
 <footer class="bg-r4f-navy text-white">
@@ -20,9 +20,9 @@ const langPrefix = lang === 'en' ? '/en' : '';
 			</p>
 		</div>
 		<div class="flex flex-wrap gap-3 text-sm font-semibold text-white/76">
-			<a class="hover:text-white" href={`${langPrefix}/staff`}>{t(lang, 'navStaff')}</a>
-			<a class="hover:text-white" href={`${langPrefix}/contact`}>{t(lang, 'navContact')}</a>
-			<a class="hover:text-white" href={lang === 'en' ? '/' : '/en'}>
+			<a class="hover:text-white" href={routePath(lang, '/staff')}>{t(lang, 'navStaff')}</a>
+			<a class="hover:text-white" href={routePath(lang, '/contact')}>{t(lang, 'navContact')}</a>
+			<a class="hover:text-white" href={langSwitchHref}>
 				{lang === 'en' ? 'ภาษาไทย' : 'English'}
 			</a>
 		</div>

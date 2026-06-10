@@ -1,5 +1,5 @@
 ---
-import { localize } from '../../lib/i18n';
+import { localize, t } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import type { NewsCategory, NewsItem } from '../../types/content';
 
@@ -8,30 +8,28 @@ interface Props {
 	lang?: Lang;
 	variant?: 'featured' | 'latest' | 'highlight' | 'compact' | 'archive';
 	extraMore?: boolean;
-	withAnchorId?: boolean;
 }
 
-const { item, lang = 'th', variant = 'compact', extraMore = false, withAnchorId = true } = Astro.props;
+const { item, lang = 'th', variant = 'compact', extraMore = false } = Astro.props;
 
 const categoryLabels: Record<Lang, Record<NewsCategory, string>> = {
 	th: {
-		Announcement: 'ประกาศ',
-		'Work Update': 'อัปเดตงาน',
-		Event: 'กิจกรรม',
-		Publication: 'บทความเผยแพร่',
-		'Project Milestone': 'หมุดหมายโครงการ',
+		Announcement: t('th', 'categoryAnnouncement'),
+		'Work Update': t('th', 'categoryWorkUpdate'),
+		Event: t('th', 'categoryEvent'),
+		Publication: t('th', 'categoryPublication'),
+		'Project Milestone': t('th', 'categoryProjectMilestone'),
 	},
 	en: {
-		Announcement: 'Announcement',
-		'Work Update': 'Work Update',
-		Event: 'Event',
-		Publication: 'Publication',
-		'Project Milestone': 'Project Milestone',
+		Announcement: t('th', 'categoryAnnouncement'),
+		'Work Update': t('th', 'categoryWorkUpdate'),
+		Event: t('th', 'categoryEvent'),
+		Publication: t('th', 'categoryPublication'),
+		'Project Milestone': t('th', 'categoryProjectMilestone'),
 	},
 };
 
-const readMoreLabel = lang === 'en' ? 'Read more' : 'อ่านเพิ่มเติม';
-const todayLabel = lang === 'en' ? 'Today' : 'วันนี้';
+const todayLabel = t(lang, 'newsToday');
 
 const dateFormatter = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'th-TH-u-ca-buddhist', {
 	day: 'numeric',
@@ -54,15 +52,13 @@ const fallbackImage = {
 };
 const cardImage = item.image ?? fallbackImage;
 const imageAlt = localize(cardImage.alt, lang);
-const itemHref = item.href.startsWith('/news/') ? `/news#${item.slug}` : item.href;
 const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} ${item.publishedAt}`.toLocaleLowerCase();
 ---
 
 <article
-	id={withAnchorId ? item.slug : undefined}
 	class:list={[
 		'news-card group bg-r4f-card transition duration-200',
-		variant === 'featured' && 'grid overflow-hidden rounded-2xl md:grid-cols-[1.12fr_1fr]',
+		variant === 'featured' && 'grid overflow-hidden rounded-2xl md:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)]',
 		variant === 'latest' && 'grid rounded-2xl p-4 sm:grid-cols-[9rem_1fr] sm:gap-5',
 		variant === 'highlight' && 'grid grid-cols-[3.25rem_1fr] gap-4 py-5',
 		variant === 'compact' && 'grid rounded-2xl p-6 sm:p-7',
@@ -76,7 +72,7 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 	{
 		variant === 'featured' && item.image && (
 			<img
-				class="h-full min-h-[18rem] w-full object-cover"
+				class="aspect-[16/10] h-full max-h-[24rem] min-h-[16rem] w-full object-cover md:aspect-auto"
 				src={item.image.src}
 				alt={imageAlt}
 				width={item.image.width}
@@ -115,12 +111,7 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 	{
 		variant === 'highlight' && (
 			<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-r4f-low text-r4f-teal" aria-hidden="true">
-				{item.category === 'Publication' ? (
-					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
-						<path d="M7 3h7l4 4v14H7V3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-						<path d="M14 3v5h4M9.5 12h5M9.5 16h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-					</svg>
-				) : item.category === 'Event' ? (
+				{item.category === 'Event' ? (
 					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
 						<path
 							d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"
@@ -147,7 +138,7 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 
 	<div
 		class:list={[
-			variant === 'featured' && 'flex flex-col justify-center px-6 py-8 sm:px-9 lg:px-12',
+			variant === 'featured' && 'flex min-w-0 flex-col justify-center px-6 py-7 sm:px-8 lg:px-10',
 			variant === 'latest' && 'pt-1',
 			variant === 'highlight' && 'min-w-0',
 			variant === 'compact' && 'min-h-[10rem]',
@@ -169,19 +160,14 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 		<h3
 			class:list={[
 				'font-display font-semibold leading-[1.28] text-r4f-navy',
-				variant === 'featured' && 'mt-5 text-[clamp(1.7rem,3vw,2.65rem)]',
+				variant === 'featured' && 'mt-5 text-[clamp(1.55rem,2.5vw,2.25rem)]',
 				variant === 'latest' && 'mt-4 text-xl',
 				variant === 'highlight' && 'mt-3 text-lg',
 				variant === 'compact' && 'mt-5 text-2xl',
 				variant === 'archive' && 'mt-5 text-[1.35rem]',
 			]}
 		>
-			<a
-				class="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
-				href={itemHref}
-			>
-				{title}
-			</a>
+			{title}
 		</h3>
 
 		{
@@ -189,14 +175,5 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 				<p class:list={['mt-4 leading-8 text-r4f-muted', variant === 'latest' ? 'text-sm' : 'text-base']}>{excerpt}</p>
 			)
 		}
-
-		<a
-			class="mt-5 inline-flex w-fit items-center gap-2 text-sm font-bold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
-			href={itemHref}
-			aria-label={`${readMoreLabel}: ${title}`}
-		>
-			{readMoreLabel}
-			<span aria-hidden="true">→</span>
-		</a>
 	</div>
 </article>

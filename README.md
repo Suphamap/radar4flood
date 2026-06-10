@@ -14,7 +14,7 @@ Use this direction unless the project owner explicitly changes it:
 - **CMS:** Sanity
 - **Hosting:** Netlify
 - **Default language:** Thai
-- **Language support:** Thai and English UI/content
+- **Language support:** Thai first, with English routes prepared through fallback until final translation
 - **Working style:** Solo project with AI-assisted development
 
 Sanity is the content CMS. Do not replace it with another CMS or add a custom backend unless explicitly requested.
@@ -32,7 +32,7 @@ Staff
 Contact Us
 ```
 
-Use Thai as the default route set and English under `/en`:
+Use Thai as the default route set and keep English structure under `/en`. Until the final translation stage, do not create translated English page files or copy. Use Astro rewrite-based fallback shims so English routes render the Thai route content without maintaining a second translated page:
 
 ```text
 /                  Home
@@ -50,6 +50,8 @@ Use Thai as the default route set and English under `/en`:
 /en/staff          English Staff page
 /en/contact        English Contact Us page
 ```
+
+The `/en` paths are structural placeholders during development. They should render Thai fallback content through `Astro.rewrite()` unless the project owner explicitly starts the final English translation pass.
 
 The `Radar4Flood` nav item is the main entry point to the existing forecast webpage. Prefer a dedicated feature page with a clear CTA unless the final forecast URL is intentionally linked directly from the navbar.
 

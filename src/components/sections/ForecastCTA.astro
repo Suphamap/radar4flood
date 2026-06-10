@@ -1,5 +1,5 @@
 ---
-import { t } from '../../lib/i18n';
+import { routeHref, t } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 
 interface Props {
@@ -8,7 +8,6 @@ interface Props {
 
 const { lang = 'th' } = Astro.props;
 
-const langPrefix = lang === 'en' ? '/en' : '';
 ---
 
 <section class="mx-auto max-w-[94rem] px-5 py-16 sm:px-8 lg:py-20 2xl:max-w-[102rem]">
@@ -21,7 +20,7 @@ const langPrefix = lang === 'en' ? '/en' : '';
 		</div>
 		<a
 			class="inline-flex min-h-11 w-fit items-center rounded-full bg-white px-5 py-3 text-sm font-bold text-r4f-navy transition hover:bg-sky-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-			href={`${langPrefix}/radar4flood`}
+			href={routeHref(lang, 'radar4flood')}
 		>
 			{t(lang, 'forecastCtaButton')}
 		</a>
