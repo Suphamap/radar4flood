@@ -18,6 +18,12 @@ function escapeHtml(str: string): string {
 		.replace(/"/g, '&quot;');
 }
 
+function isSafeHref(href: string): boolean {
+	// Only allow http(s), root-relative, and anchor links — blocks javascript:/data: URIs
+	// once this renderer is wired to untrusted Sanity content.
+	return /^https?:\/\//i.test(href) || href.startsWith('/') || href.startsWith('#');
+}
+
 function renderSpans(spans: PortableTextSpan[], markDefs: PortableTextMarkDef[]): string {
 	const defsById = Object.fromEntries(markDefs.map((m) => [m._key, m]));
 	return spans
@@ -30,7 +36,7 @@ function renderSpans(spans: PortableTextSpan[], markDefs: PortableTextMarkDef[])
 					html = `<em>${html}</em>`;
 				} else {
 					const def = defsById[mark];
-					if (def?._type === 'link' && def.href) {
+					if (def?._type === 'link' && def.href && isSafeHref(def.href)) {
 						const attrs = def.blank ? ' target="_blank" rel="noopener noreferrer"' : '';
 						html = `<a href="${escapeHtml(def.href)}"${attrs} class="text-r4f-teal underline underline-offset-2 hover:text-r4f-navy">${html}</a>`;
 					}
