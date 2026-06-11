@@ -14,8 +14,9 @@ export interface BilingualText {
 
 /**
  * Pick the correct language string from a bilingual pair.
- * Falls back to the other language if the requested one is missing.
+ * English content fields are kept for the final translation stage, but the
+ * website intentionally renders Thai copy until those translations are ready.
  */
 export function localize(text: BilingualText, lang: Lang): string {
-	return (lang === 'en' ? text.en ?? text.th : text.th ?? text.en) ?? '';
+	return text.th ?? (lang === 'en' ? text.en : undefined) ?? text.en ?? '';
 }

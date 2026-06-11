@@ -1,0 +1,171 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PortableTextRenderer from '../news/PortableTextRenderer.astro';
+import NewsGallery from '../news/NewsGallery.astro';
+import AuthorCard from '../news/AuthorCard.astro';
+import { localize, routeHref, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import type { NewsCategory, NewsDetailItem } from '../../types/content';
+
+interface Props {
+	post: NewsDetailItem;
+	lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+
+const title = localize(post.title, lang);
+const excerpt = localize(post.excerpt, lang);
+const newsHref = routeHref(lang, 'news');
+
+const dateFormatter = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'th-TH-u-ca-buddhist', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+});
+const dateLabel = dateFormatter.format(new Date(`${post.publishedAt}T00:00:00`));
+
+const categoryLabels: Record<NewsCategory, string> = {
+	Announcement: t(lang, 'categoryAnnouncement'),
+	'Work Update': t(lang, 'categoryWorkUpdate'),
+	Event: t(lang, 'categoryEvent'),
+	Publication: t(lang, 'categoryPublication'),
+	'Project Milestone': t(lang, 'categoryProjectMilestone'),
+};
+
+const showThaiOnly = lang === 'en' && !post.bodyEn;
+const body = lang === 'th' ? post.bodyTh : (post.bodyEn ?? post.bodyTh);
+
+const imageAlt = post.image ? localize(post.image.alt, lang) : '';
+
+const jsonLd = JSON.stringify({
+	'@context': 'https://schema.org',
+	'@type': 'NewsArticle',
+	headline: title,
+	image: post.image?.src,
+	datePublished: post.publishedAt,
+	author: {
+		'@type': 'Person',
+		name: post.author?.name ?? 'Radar4Flood',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'Radar4Flood',
+	},
+});
+---
+
+<Layout title={`${title} | Radar4Flood`} description={excerpt} lang={lang} ogImage={post.image?.src} ogType="article">
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={jsonLd} />
+	</Fragment>
+
+	<article class="bg-r4f-surface pb-20">
+		<div class="mx-auto max-w-[54rem] px-5 pt-8 sm:px-8">
+			<a
+				class="inline-flex items-center gap-1.5 text-sm font-semibold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+				href={newsHref}
+			>
+				<span aria-hidden="true">←</span>
+				{t(lang, 'newsBackToArchive')}
+			</a>
+		</div>
+
+		{
+			post.image && (
+				<div class="mx-auto mt-6 max-w-[64rem] px-5 sm:px-8">
+					<figure class="overflow-hidden rounded-2xl">
+						<img
+							src={post.image.src}
+							alt={imageAlt}
+							width={post.image.width}
+							height={post.image.height}
+							class="aspect-[16/9] w-full object-cover"
+							loading="eager"
+						/>
+					</figure>
+				</div>
+			)
+		}
+
+		<header class="mx-auto mt-8 max-w-[54rem] px-5 sm:px-8">
+			<div class="flex flex-wrap items-center gap-3">
+				<span class="inline-flex rounded-full bg-[#EAF6F7] px-3 py-1 text-xs font-bold text-r4f-teal">
+					{categoryLabels[post.category]}
+				</span>
+				<time class="text-sm font-semibold text-r4f-muted" datetime={post.publishedAt}>
+					{dateLabel}
+				</time>
+			</div>
+
+			<h1 class="mt-4 text-[clamp(1.6rem,3.5vw,2.5rem)] font-semibold leading-[1.22] text-r4f-navy">
+				{title}
+			</h1>
+
+			{
+				post.author && (
+					<div class="mt-5 flex items-center gap-3">
+						{post.author.image ? (
+							<img
+								src={post.author.image}
+								alt={post.author.name}
+								width={40}
+								height={40}
+								class="h-10 w-10 rounded-full object-cover"
+							/>
+						) : (
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-full bg-r4f-low text-sm font-bold text-r4f-teal"
+								aria-hidden="true"
+							>
+								{post.author.name.charAt(0)}
+							</div>
+						)}
+						<div>
+							<p class="text-sm font-semibold text-r4f-navy">{post.author.name}</p>
+							<p class="text-xs text-r4f-muted">{post.author.role}</p>
+						</div>
+					</div>
+				)
+			}
+		</header>
+
+		{
+			showThaiOnly && (
+				<div class="mx-auto mt-6 max-w-[54rem] px-5 sm:px-8">
+					<p class="rounded-xl bg-r4f-low px-5 py-4 text-sm text-r4f-muted">{t(lang, 'newsDetailThaiOnly')}</p>
+				</div>
+			)
+		}
+
+		<section class="mx-auto mt-8 max-w-[54rem] px-5 sm:px-8">
+			<PortableTextRenderer blocks={body} lang={lang} />
+		</section>
+
+		{
+			post.galleryImages && post.galleryImages.length > 0 && (
+				<div class="mx-auto mt-10 max-w-[64rem] px-5 sm:px-8">
+					<NewsGallery images={post.galleryImages} lang={lang} />
+				</div>
+			)
+		}
+
+		{
+			post.author && (
+				<div class="mx-auto mt-12 max-w-[54rem] px-5 sm:px-8">
+					<AuthorCard author={post.author} lang={lang} />
+				</div>
+			)
+		}
+
+		<div class="mx-auto mt-12 max-w-[54rem] px-5 sm:px-8">
+			<a
+				class="inline-flex items-center gap-1.5 text-sm font-semibold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+				href={newsHref}
+			>
+				<span aria-hidden="true">←</span>
+				{t(lang, 'newsBackToArchive')}
+			</a>
+		</div>
+	</article>
+</Layout>

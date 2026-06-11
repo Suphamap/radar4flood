@@ -1,0 +1,226 @@
+---
+import { localize, routePath, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import type { NewsCategory, NewsItem } from '../../types/content';
+
+interface Props {
+	item: NewsItem;
+	lang?: Lang;
+	variant?: 'featured' | 'latest' | 'highlight' | 'compact' | 'archive' | 'numbered';
+	extraMore?: boolean;
+	index?: number;
+}
+
+const { item, lang = 'th', variant = 'compact', extraMore = false, index } = Astro.props;
+const indexLabel = typeof index === 'number' ? String(index).padStart(2, '0') : undefined;
+
+const categoryLabels: Record<Lang, Record<NewsCategory, string>> = {
+	th: {
+		Announcement: t('th', 'categoryAnnouncement'),
+		'Work Update': t('th', 'categoryWorkUpdate'),
+		Event: t('th', 'categoryEvent'),
+		Publication: t('th', 'categoryPublication'),
+		'Project Milestone': t('th', 'categoryProjectMilestone'),
+	},
+	en: {
+		Announcement: t('th', 'categoryAnnouncement'),
+		'Work Update': t('th', 'categoryWorkUpdate'),
+		Event: t('th', 'categoryEvent'),
+		Publication: t('th', 'categoryPublication'),
+		'Project Milestone': t('th', 'categoryProjectMilestone'),
+	},
+};
+
+const todayLabel = t(lang, 'newsToday');
+
+const dateFormatter = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'th-TH-u-ca-buddhist', {
+	day: 'numeric',
+	month: 'short',
+	year: 'numeric',
+});
+
+const publishedDate = new Date(`${item.publishedAt}T00:00:00`);
+const dateLabel = item.isToday ? todayLabel : dateFormatter.format(publishedDate);
+const title = localize(item.title, lang);
+const excerpt = localize(item.excerpt, lang);
+const fallbackImage = {
+	src: '/images/radar4flood-field-radar.png',
+	alt: {
+		th: 'ภาพสถานีเรดาร์ภาคสนามของโครงการ Radar4Flood',
+		en: 'Radar4Flood field radar station image',
+	},
+	width: 1824,
+	height: 863,
+};
+const cardImage = item.image ?? fallbackImage;
+const imageAlt = localize(cardImage.alt, lang);
+const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} ${item.publishedAt}`.toLocaleLowerCase();
+const detailHref = routePath(lang, `/news/${item.slug}`);
+---
+
+<article
+	class:list={[
+		'news-card group relative bg-r4f-card transition duration-200',
+		variant === 'featured' && 'grid overflow-hidden rounded-2xl md:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)]',
+		variant === 'latest' && 'grid rounded-2xl p-4 sm:grid-cols-[9rem_1fr] sm:gap-5',
+		variant === 'highlight' && 'grid grid-cols-[3.25rem_1fr] gap-4 py-5',
+		variant === 'compact' && 'grid rounded-2xl p-6 sm:p-7',
+		variant === 'archive' && 'flex h-full flex-col overflow-hidden rounded-2xl',
+		variant === 'numbered' &&
+			'grid grid-cols-[2.75rem_minmax(0,1fr)_1.25rem] items-start gap-4 rounded-2xl p-5 outline outline-1 outline-r4f-line transition hover:outline-r4f-sky sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-5 sm:p-6',
+	]}
+	data-news-card
+	data-category={item.category}
+	data-search={searchable}
+	data-extra-more={extraMore ? 'true' : undefined}
+>
+	{
+		variant === 'featured' && item.image && (
+			<img
+				class="aspect-[16/10] h-full max-h-[24rem] min-h-[16rem] w-full object-cover md:aspect-auto"
+				src={item.image.src}
+				alt={imageAlt}
+				width={item.image.width}
+				height={item.image.height}
+				loading="eager"
+			/>
+		)
+	}
+
+	{
+		variant === 'latest' && item.image && (
+			<img
+				class="aspect-[1.08/1] h-full w-full rounded-xl object-cover"
+				src={item.image.src}
+				alt={imageAlt}
+				width={item.image.width}
+				height={item.image.height}
+				loading="lazy"
+			/>
+		)
+	}
+
+	{
+		variant === 'archive' && (
+			<img
+				class="aspect-[16/9] w-full object-cover"
+				src={cardImage.src}
+				alt={imageAlt}
+				width={cardImage.width}
+				height={cardImage.height}
+				loading="lazy"
+			/>
+		)
+	}
+
+	{
+		variant === 'highlight' && (
+			<div class="flex h-12 w-12 items-center justify-center rounded-xl bg-r4f-low text-r4f-teal" aria-hidden="true">
+				{item.category === 'Event' ? (
+					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+						<path
+							d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linejoin="round"
+						/>
+						<path d="M12 12.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" stroke="currentColor" stroke-width="1.8" />
+					</svg>
+				) : (
+					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+						<path
+							d="M12 20v-4M7 18a8 8 0 1 1 10 0M8.8 14.5a4.5 4.5 0 1 1 6.4 0"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+						/>
+						<path d="M12 12.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+					</svg>
+				)}
+			</div>
+		)
+	}
+
+	{
+		variant === 'numbered' && (
+			<span class="font-display text-3xl font-bold leading-none text-r4f-navy/25 sm:text-[2.5rem]" aria-hidden="true">
+				{indexLabel}
+			</span>
+		)
+	}
+
+	<div
+		class:list={[
+			variant === 'featured' && 'flex min-w-0 flex-col justify-center px-6 py-7 sm:px-8 lg:px-10',
+			variant === 'latest' && 'pt-1',
+			variant === 'highlight' && 'min-w-0',
+			variant === 'compact' && 'min-h-[10rem]',
+			variant === 'archive' && 'flex flex-1 flex-col p-6 sm:p-7',
+			variant === 'numbered' && 'min-w-0',
+		]}
+	>
+		<div class="flex flex-wrap items-center gap-3">
+			<span
+				class:list={[
+					'inline-flex rounded-full px-3 py-1 text-xs font-bold',
+					variant === 'highlight' ? 'bg-r4f-low text-r4f-teal' : 'bg-[#EAF6F7] text-r4f-teal',
+				]}
+			>
+				{categoryLabels[lang][item.category]}
+			</span>
+			<time class="text-sm font-semibold text-r4f-muted" datetime={item.publishedAt}>{dateLabel}</time>
+		</div>
+
+		<h3
+			class:list={[
+				'font-display font-semibold leading-[1.28] text-r4f-navy transition-colors duration-200 group-hover:text-r4f-teal',
+				variant === 'featured' && 'mt-5 text-[clamp(1.55rem,2.5vw,2.25rem)]',
+				variant === 'latest' && 'mt-4 text-xl',
+				variant === 'highlight' && 'mt-3 text-lg',
+				variant === 'compact' && 'mt-5 text-2xl',
+				variant === 'archive' && 'mt-5 text-[1.35rem]',
+				variant === 'numbered' && 'text-lg leading-[1.35] sm:text-xl',
+			]}
+		>
+			<a
+				href={detailHref}
+				class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-r4f-sky"
+			>
+				{title}
+			</a>
+		</h3>
+
+		{
+			variant !== 'highlight' && (
+				<p
+					class:list={[
+						'text-r4f-muted',
+						variant === 'numbered' ? 'mt-2 line-clamp-2 text-sm leading-7' : 'mt-4 leading-8',
+						variant === 'latest' || variant === 'numbered' ? 'text-sm' : 'text-base',
+					]}
+				>
+					{excerpt}
+				</p>
+			)
+		}
+	</div>
+
+	{
+		variant === 'numbered' && (
+			<span
+				class="mt-1 flex justify-end text-r4f-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:text-r4f-teal"
+				aria-hidden="true"
+			>
+				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+					<path
+						d="m9 6 6 6-6 6"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			</span>
+		)
+	}
+</article>

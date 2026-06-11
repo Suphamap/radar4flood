@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { routeHref, t } from '../lib/i18n';
+---
+
+<Layout
+	title={`${t('th', 'newsMissingTitle')} | Radar4Flood`}
+	description={t('th', 'newsMissingDescription')}
+	lang="th"
+>
+	<section class="bg-r4f-surface">
+		<div class="mx-auto max-w-[94rem] px-5 py-20 sm:px-8 md:py-28 2xl:max-w-[102rem]">
+			<div class="max-w-2xl rounded-2xl bg-r4f-low p-8 sm:p-10">
+				<p class="text-sm font-bold text-r4f-teal">404</p>
+				<h1 class="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-tight text-r4f-navy">
+					{t('th', 'newsMissingTitle')}
+				</h1>
+				<p class="mt-5 text-lg leading-9 text-r4f-muted">{t('th', 'newsMissingDescription')}</p>
+				<a
+					class="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-r4f-teal px-5 text-sm font-bold text-white transition hover:bg-[#07565A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+					href={routeHref('th', 'news')}
+				>
+					<span aria-hidden="true">←</span>
+					{t('th', 'newsBackToArchive')}
+				</a>
+			</div>
+		</div>
+	</section>
+</Layout>

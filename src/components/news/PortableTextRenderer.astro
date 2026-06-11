@@ -1,0 +1,112 @@
+---
+import type { PortableTextContent, PortableTextSpan, PortableTextMarkDef } from '../../types/content';
+import type { Lang } from '../../lib/i18n';
+import { localize } from '../../lib/i18n';
+
+interface Props {
+	blocks: PortableTextContent[];
+	lang: Lang;
+}
+
+const { blocks, lang } = Astro.props;
+
+function escapeHtml(str: string): string {
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+}
+
+function isSafeHref(href: string): boolean {
+	// Only allow http(s), root-relative, and anchor links — blocks javascript:/data: URIs
+	// once this renderer is wired to untrusted Sanity content.
+	return /^https?:\/\//i.test(href) || href.startsWith('/') || href.startsWith('#');
+}
+
+function renderSpans(spans: PortableTextSpan[], markDefs: PortableTextMarkDef[]): string {
+	const defsById = Object.fromEntries(markDefs.map((m) => [m._key, m]));
+	return spans
+		.map((span) => {
+			let html = escapeHtml(span.text);
+			for (const mark of span.marks) {
+				if (mark === 'strong') {
+					html = `<strong class="font-semibold text-r4f-ink">${html}</strong>`;
+				} else if (mark === 'em') {
+					html = `<em>${html}</em>`;
+				} else {
+					const def = defsById[mark];
+					if (def?._type === 'link' && def.href && isSafeHref(def.href)) {
+						const attrs = def.blank ? ' target="_blank" rel="noopener noreferrer"' : '';
+						html = `<a href="${escapeHtml(def.href)}"${attrs} class="text-r4f-teal underline underline-offset-2 hover:text-r4f-navy">${html}</a>`;
+					}
+				}
+			}
+			return html;
+		})
+		.join('');
+}
+---
+
+{
+	blocks.map((block) => {
+		if (block._type === 'block') {
+			const html = renderSpans(block.children, block.markDefs);
+			if (block.style === 'h2') {
+				return (
+					<h2
+						class="mb-4 mt-10 text-2xl font-semibold leading-tight text-r4f-navy first:mt-0"
+						set:html={html}
+					/>
+				);
+			}
+			if (block.style === 'h3') {
+				return (
+					<h3
+						class="mb-3 mt-8 text-xl font-semibold leading-snug text-r4f-navy first:mt-0"
+						set:html={html}
+					/>
+				);
+			}
+			if (block.style === 'blockquote') {
+				return (
+					<blockquote
+						class="my-6 border-l-4 border-r4f-teal py-1 pl-5 italic text-r4f-muted"
+						set:html={html}
+					/>
+				);
+			}
+			return <p class="mb-5 text-base leading-8 text-r4f-ink last:mb-0" set:html={html} />;
+		}
+
+		if (block._type === 'image') {
+			const alt = block.alt ? localize(block.alt, lang) : '';
+			const caption = block.caption ? localize(block.caption, lang) : '';
+			return (
+				<figure class="my-8 overflow-hidden rounded-xl">
+					<img src={block.asset.url} alt={alt} class="w-full object-cover" loading="lazy" />
+					{caption && (
+						<figcaption class="mt-2 text-center text-sm text-r4f-muted">{caption}</figcaption>
+					)}
+				</figure>
+			);
+		}
+
+		if (block._type === 'callout') {
+			const body = localize({ th: block.bodyTh, en: block.bodyEn }, lang);
+			return (
+				<aside class="my-6 rounded-xl bg-[#D8EEF0] px-5 py-4 text-base text-r4f-teal">{body}</aside>
+			);
+		}
+
+		if (block._type === 'code') {
+			return (
+				<pre class="my-6 overflow-x-auto rounded-xl bg-r4f-low px-5 py-4 text-sm">
+					<code class={block.language ? `language-${block.language}` : ''}>{block.code}</code>
+				</pre>
+			);
+		}
+
+		return null;
+	})
+}

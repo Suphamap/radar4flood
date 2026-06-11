@@ -8,12 +8,16 @@ interface Props {
 	title?: string;
 	description?: string;
 	lang?: Lang;
+	ogImage?: string;
+	ogType?: string;
 }
 
 const {
 	title = 'Radar4Flood',
 	description = 'Radar4Flood public academic website for radar-based flood forecasting.',
 	lang = 'th',
+	ogImage,
+	ogType = 'website',
 } = Astro.props;
 ---
 
@@ -23,6 +27,10 @@ const {
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content={ogType} />
+		{ogImage && <meta property="og:image" content={ogImage} />}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,6 +41,7 @@ const {
 		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<slot name="head" />
 	</head>
 	<body>
 		<Header lang={lang} />

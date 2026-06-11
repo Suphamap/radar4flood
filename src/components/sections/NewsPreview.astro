@@ -1,7 +1,8 @@
 ---
-import { t, localize } from '../../lib/i18n';
+import { t, localize, routePath } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import { newsItems } from '../../data/news';
+import type { NewsCategory } from '../../types/content';
 
 interface Props {
 	lang?: Lang;
@@ -9,14 +10,24 @@ interface Props {
 
 const { lang = 'th' } = Astro.props;
 
-const langPrefix = lang === 'en' ? '/en' : '';
+const allNewsHref = routePath(lang, '/news?view=all');
+const previewItems = newsItems.slice(0, 3);
+const categoryLabels: Record<NewsCategory, string> = {
+	Announcement: t(lang, 'categoryAnnouncement'),
+	'Work Update': t(lang, 'categoryWorkUpdate'),
+	Event: t(lang, 'categoryEvent'),
+	Publication: t(lang, 'categoryPublication'),
+	'Project Milestone': t(lang, 'categoryProjectMilestone'),
+};
 ---
 
 <section id="news" class="mx-auto max-w-[94rem] px-5 py-16 sm:px-8 lg:py-24 2xl:max-w-[102rem]">
 	<div class="grid gap-7 md:grid-cols-[0.72fr_1fr] md:items-end">
 		<div>
 			<p class="text-sm font-semibold text-r4f-teal">{t(lang, 'newsLabel')}</p>
-			<h2 class="mt-3 font-display text-[clamp(2.25rem,5vw,4.5rem)] font-semibold leading-[1.12] tracking-normal text-r4f-navy">
+			<h2
+				class="mt-3 font-display text-[clamp(2.25rem,5vw,4.5rem)] font-semibold leading-[1.12] tracking-normal text-r4f-navy"
+			>
 				{t(lang, 'newsTitle')}
 			</h2>
 		</div>
@@ -24,7 +35,7 @@ const langPrefix = lang === 'en' ? '/en' : '';
 			<p class="text-base leading-8 text-r4f-muted">
 				{t(lang, 'newsDescription')}
 			</p>
-			<a class="mt-5 inline-flex font-bold text-r4f-teal hover:text-r4f-navy" href={`${langPrefix}/news`}>
+			<a class="mt-5 inline-flex font-bold text-r4f-teal hover:text-r4f-navy" href={allNewsHref}>
 				{t(lang, 'newsViewAll')}
 			</a>
 		</div>
@@ -32,14 +43,19 @@ const langPrefix = lang === 'en' ? '/en' : '';
 
 	<div class="mt-11 grid gap-5 lg:grid-cols-[minmax(0,1.18fr)_minmax(20rem,0.82fr)]">
 		{
-			newsItems.map((item, index) => (
+			previewItems.map((item, index) => (
 				<article
 					class:list={[
-						'transition duration-200 hover:-translate-y-0.5',
+						'overflow-hidden transition duration-200 hover:-translate-y-0.5',
 						index === 0
-							? 'min-h-[27rem] rounded-2xl bg-[linear-gradient(180deg,_rgb(0_30_69_/_4%)_0%,_rgb(0_30_69_/_88%)_100%),url(/images/radar4flood-field-radar.png)] bg-cover bg-center p-6 text-white sm:p-8 lg:row-span-2'
-							: 'rounded-2xl bg-r4f-low p-6 sm:p-7',
+							? 'min-h-[27rem] rounded-2xl bg-cover bg-center p-6 text-white sm:p-8 lg:row-span-2'
+							: 'rounded-2xl bg-r4f-low p-6 sm:p-7 lg:min-h-[15rem]',
 					]}
+					style={
+						index === 0
+							? `background-image: linear-gradient(180deg, rgb(0 30 69 / 4%) 0%, rgb(0 30 69 / 88%) 100%), url(${item.image?.src ?? '/images/radar4flood-field-radar.png'});`
+							: undefined
+					}
 				>
 					<div class:list={[index === 0 ? 'flex h-full max-w-2xl flex-col justify-end' : 'max-w-xl']}>
 						<div class="mb-5 flex flex-wrap items-center gap-3">
@@ -49,18 +65,21 @@ const langPrefix = lang === 'en' ? '/en' : '';
 									index === 0 ? 'bg-white text-r4f-navy' : 'bg-white text-r4f-teal',
 								]}
 							>
-								{item.category}
+								{categoryLabels[item.category]}
 							</span>
 							<span class:list={['text-sm font-medium', index === 0 ? 'text-white/76' : 'text-r4f-muted']}>
 								{item.publishedAt}
 							</span>
 						</div>
-						<h3 class:list={['font-display font-semibold leading-tight', index === 0 ? 'text-3xl sm:text-4xl' : 'text-2xl text-r4f-navy']}>
-							<a class="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky" href={`${langPrefix}${item.href}`}>
-								{localize(item.title, lang)}
-							</a>
+						<h3
+							class:list={[
+								'news-preview-title font-display font-semibold leading-tight',
+								index === 0 ? 'text-3xl sm:text-4xl' : 'text-2xl text-r4f-navy',
+							]}
+						>
+							{localize(item.title, lang)}
 						</h3>
-						<p class:list={['mt-4 leading-7', index === 0 ? 'text-white/80' : 'text-r4f-muted']}>
+						<p class:list={['news-preview-excerpt mt-4 leading-7', index === 0 ? 'text-white/80' : 'text-r4f-muted']}>
 							{localize(item.excerpt, lang)}
 						</p>
 					</div>
@@ -69,3 +88,20 @@ const langPrefix = lang === 'en' ? '/en' : '';
 		}
 	</div>
 </section>
+
+<style>
+	.news-preview-title,
+	.news-preview-excerpt {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.news-preview-title {
+		-webkit-line-clamp: 3;
+	}
+
+	.news-preview-excerpt {
+		-webkit-line-clamp: 2;
+	}
+</style>

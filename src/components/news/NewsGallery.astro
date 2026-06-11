@@ -1,0 +1,44 @@
+---
+import type { NewsImage } from '../../types/content';
+import type { Lang } from '../../lib/i18n';
+import { localize, t } from '../../lib/i18n';
+
+interface Props {
+	images: NewsImage[];
+	lang: Lang;
+}
+
+const { images, lang } = Astro.props;
+---
+
+<section>
+	<p class="mb-4 text-xs font-bold uppercase tracking-widest text-r4f-muted">
+		{t(lang, 'newsDetailGallery')}
+	</p>
+	<ul class="grid grid-cols-2 gap-3 sm:grid-cols-3" role="list">
+		{
+			images.map((image) => {
+				const alt = localize(image.alt, lang);
+				return (
+					<li>
+						<a
+							href={image.src}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="block overflow-hidden rounded-xl"
+						>
+							<img
+								src={image.src}
+								alt={alt}
+								width={image.width}
+								height={image.height}
+								class="aspect-[4/3] w-full object-cover transition duration-200 hover:scale-[1.03]"
+								loading="lazy"
+							/>
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</section>

@@ -1,0 +1,30 @@
+---
+import { routeHref, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+
+interface Props {
+	title: string;
+	lang?: Lang;
+	showAllButton?: boolean;
+	href?: string;
+}
+
+const { title, lang = 'th', showAllButton = true, href } = Astro.props;
+const archiveHref = href ?? routeHref(lang, 'news');
+---
+
+<div class="flex items-center justify-between gap-5">
+	<h2 class="font-display text-2xl font-semibold leading-tight text-r4f-navy sm:text-[1.7rem]">{title}</h2>
+	{
+		showAllButton && (
+			<a
+				class="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-2 text-sm font-bold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+				href={archiveHref}
+				data-show-all-news
+			>
+				{t(lang, 'newsViewAllShort')}
+				<span aria-hidden="true">→</span>
+			</a>
+		)
+	}
+</div>

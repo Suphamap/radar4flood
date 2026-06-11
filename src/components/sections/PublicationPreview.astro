@@ -1,5 +1,5 @@
 ---
-import { t, localize } from '../../lib/i18n';
+import { t, localize, routeHref } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import { publicationItems } from '../../data/publications';
 
@@ -9,7 +9,6 @@ interface Props {
 
 const { lang = 'th' } = Astro.props;
 
-const langPrefix = lang === 'en' ? '/en' : '';
 ---
 
 <section id="publication" class="bg-r4f-low py-16 lg:py-24">
@@ -25,7 +24,7 @@ const langPrefix = lang === 'en' ? '/en' : '';
 				</p>
 				<a
 					class="mt-7 inline-flex min-h-11 items-center rounded-full bg-r4f-teal px-5 py-3 text-sm font-bold text-white transition hover:bg-[#086065] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-teal"
-					href={`${langPrefix}/publication`}
+					href={routeHref(lang, 'publication')}
 				>
 					{t(lang, 'pubViewAll')}
 				</a>

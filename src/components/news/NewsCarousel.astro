@@ -1,0 +1,260 @@
+---
+import { localize, routePath, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import type { NewsCategory, NewsItem } from '../../types/content';
+
+interface Props {
+	items: NewsItem[];
+	lang?: Lang;
+}
+
+const { items, lang = 'th' } = Astro.props;
+
+const categoryLabels: Record<NewsCategory, string> = {
+	Announcement: t(lang, 'categoryAnnouncement'),
+	'Work Update': t(lang, 'categoryWorkUpdate'),
+	Event: t(lang, 'categoryEvent'),
+	Publication: t(lang, 'categoryPublication'),
+	'Project Milestone': t(lang, 'categoryProjectMilestone'),
+};
+
+const todayLabel = t(lang, 'newsToday');
+const dateFormatter = new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'th-TH-u-ca-buddhist', {
+	day: 'numeric',
+	month: 'short',
+	year: 'numeric',
+});
+
+const fallbackImage = {
+	src: '/images/radar4flood-field-radar.png',
+	alt: {
+		th: 'ภาพสถานีเรดาร์ภาคสนามของโครงการ Radar4Flood',
+		en: 'Radar4Flood field radar station image',
+	},
+	width: 1824,
+	height: 863,
+};
+
+const slides = items.map((item) => {
+	const image = item.image ?? fallbackImage;
+	const publishedDate = new Date(`${item.publishedAt}T00:00:00`);
+	return {
+		category: categoryLabels[item.category],
+		date: item.isToday ? todayLabel : dateFormatter.format(publishedDate),
+		datetime: item.publishedAt,
+		title: localize(item.title, lang),
+		excerpt: localize(item.excerpt, lang),
+		href: routePath(lang, `/news/${item.slug}`),
+		imageSrc: image.src,
+		imageAlt: localize(image.alt, lang),
+		imageWidth: image.width,
+		imageHeight: image.height,
+	};
+});
+
+const readMore = t(lang, 'newsArchiveReadMore');
+const single = slides.length <= 1;
+---
+
+<div class="news-carousel" data-news-carousel data-count={slides.length}>
+	<div class="overflow-hidden rounded-3xl bg-r4f-card outline outline-1 outline-r4f-line">
+		<div class="news-carousel__track flex" data-carousel-track>
+			{
+				slides.map((slide, index) => (
+					<article
+						class="news-carousel__slide grid w-full shrink-0 grow-0 basis-full md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]"
+						data-carousel-slide
+						aria-hidden={index === 0 ? 'false' : 'true'}
+					>
+						<div class="relative">
+							<img
+								class="h-64 w-full object-cover sm:h-80 md:h-full md:min-h-[24rem]"
+								src={slide.imageSrc}
+								alt={slide.imageAlt}
+								width={slide.imageWidth}
+								height={slide.imageHeight}
+								loading={index === 0 ? 'eager' : 'lazy'}
+							/>
+						</div>
+
+						<div class="flex min-w-0 flex-col justify-center px-6 py-8 sm:px-9 md:px-10 lg:px-12">
+							<div class="flex flex-wrap items-center gap-3">
+								<span class="inline-flex rounded-full bg-[#EAF6F7] px-3 py-1 text-xs font-bold text-r4f-teal">
+									{slide.category}
+								</span>
+								<time class="text-sm font-semibold text-r4f-muted" datetime={slide.datetime}>
+									{slide.date}
+								</time>
+							</div>
+
+							<h3 class="mt-5 font-display text-[clamp(1.5rem,2.6vw,2.1rem)] font-semibold leading-[1.18] text-r4f-navy">
+								<a
+									class="transition-colors hover:text-r4f-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
+									href={slide.href}
+									tabindex={index === 0 ? undefined : '-1'}
+								>
+									{slide.title}
+								</a>
+							</h3>
+
+							<p class="mt-4 line-clamp-3 text-base leading-8 text-r4f-muted">{slide.excerpt}</p>
+
+							<a
+								class="mt-7 inline-flex min-h-11 w-fit items-center gap-2 rounded-full bg-r4f-navy px-6 text-sm font-bold text-white transition hover:bg-r4f-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+								href={slide.href}
+								tabindex={index === 0 ? undefined : '-1'}
+							>
+								{readMore}
+								<span aria-hidden="true">→</span>
+							</a>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+
+	{
+		!single && (
+			<div class="mt-6 flex items-center justify-center gap-4">
+				<button
+					class="news-carousel__arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-r4f-card text-r4f-navy outline outline-1 outline-r4f-line transition hover:text-r4f-teal hover:outline-r4f-sky focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky disabled:opacity-40"
+					type="button"
+					data-carousel-prev
+					aria-label={t(lang, 'newsCarouselPrev')}
+				>
+					<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path
+							d="m15 6-6 6 6 6"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</button>
+
+				<div class="flex items-center gap-2" role="tablist" data-carousel-dots>
+					{slides.map((_, index) => (
+						<button
+							class="news-carousel__dot h-2.5 rounded-full bg-r4f-line transition-all duration-300 hover:bg-r4f-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							type="button"
+							data-carousel-dot
+							aria-label={`${t(lang, 'newsCarouselGoTo')} ${index + 1}`}
+							aria-selected={index === 0 ? 'true' : 'false'}
+						/>
+					))}
+				</div>
+
+				<button
+					class="news-carousel__arrow inline-flex h-10 w-10 items-center justify-center rounded-full bg-r4f-card text-r4f-navy outline outline-1 outline-r4f-line transition hover:text-r4f-teal hover:outline-r4f-sky focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky disabled:opacity-40"
+					type="button"
+					data-carousel-next
+					aria-label={t(lang, 'newsCarouselNext')}
+				>
+					<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+						<path
+							d="m9 6 6 6-6 6"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					</svg>
+				</button>
+			</div>
+		)
+	}
+</div>
+
+<style>
+	.news-carousel__track {
+		transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+		will-change: transform;
+	}
+
+	.news-carousel__dot {
+		width: 0.625rem;
+	}
+
+	.news-carousel__dot[aria-selected='true'] {
+		width: 1.65rem;
+		background: var(--color-r4f-sky);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.news-carousel__track {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	const carousels = document.querySelectorAll<HTMLElement>('[data-news-carousel]');
+
+	carousels.forEach((root) => {
+		const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+		const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+		const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-carousel-dot]'));
+		const prev = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+		const next = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+
+		if (!track || slides.length <= 1) return;
+
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+		let index = 0;
+		let timer: number | undefined;
+
+		const render = () => {
+			track.style.transform = `translateX(-${index * 100}%)`;
+			slides.forEach((slide, i) => {
+				const active = i === index;
+				slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+				slide.querySelectorAll<HTMLElement>('a').forEach((link) => {
+					if (active) link.removeAttribute('tabindex');
+					else link.setAttribute('tabindex', '-1');
+				});
+			});
+			dots.forEach((dot, i) => dot.setAttribute('aria-selected', i === index ? 'true' : 'false'));
+		};
+
+		const goTo = (next: number) => {
+			index = (next + slides.length) % slides.length;
+			render();
+		};
+
+		const stop = () => {
+			if (timer) window.clearInterval(timer);
+			timer = undefined;
+		};
+
+		const start = () => {
+			if (reduceMotion.matches) return;
+			stop();
+			timer = window.setInterval(() => goTo(index + 1), 6500);
+		};
+
+		prev?.addEventListener('click', () => {
+			goTo(index - 1);
+			start();
+		});
+		next?.addEventListener('click', () => {
+			goTo(index + 1);
+			start();
+		});
+		dots.forEach((dot, i) =>
+			dot.addEventListener('click', () => {
+				goTo(i);
+				start();
+			}),
+		);
+
+		root.addEventListener('mouseenter', stop);
+		root.addEventListener('mouseleave', start);
+		root.addEventListener('focusin', stop);
+		root.addEventListener('focusout', start);
+
+		render();
+		start();
+	});
+</script>

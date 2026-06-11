@@ -1,21 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/sections/HeroSection.astro';
-import SignalsSection from '../components/sections/SignalsSection.astro';
-import NewsPreview from '../components/sections/NewsPreview.astro';
-import PublicationPreview from '../components/sections/PublicationPreview.astro';
-import ForecastCTA from '../components/sections/ForecastCTA.astro';
-
-const forecastUrl = import.meta.env.PUBLIC_FORECAST_URL || '/radar4flood';
+import HomePage from '../components/pages/HomePage.astro';
 ---
 
-<Layout
-	title="Radar4Flood | ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม"
-	description="Radar4Flood introduces a radar-based flood forecasting academic project, with project updates, publications, staff information, and a path to the forecast webpage."
->
-	<HeroSection forecastUrl={forecastUrl} />
-	<SignalsSection />
-	<NewsPreview />
-	<PublicationPreview />
-	<ForecastCTA />
-</Layout>
+<HomePage lang="th" />

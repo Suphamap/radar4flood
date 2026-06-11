@@ -1,0 +1,186 @@
+---
+import { routeHref, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import type { NewsCategory } from '../../types/content';
+
+interface BrowseItem {
+	label: string;
+	value: NewsCategory;
+}
+
+interface Props {
+	lang?: Lang;
+	browseItems: BrowseItem[];
+}
+
+const { lang = 'th', browseItems } = Astro.props;
+const archiveHref = routeHref(lang, 'news');
+const homeHref = routeHref(lang, 'home');
+---
+
+<section class="news-hero relative isolate overflow-hidden bg-r4f-low text-r4f-navy">
+	<div class="news-hero__rings" aria-hidden="true"></div>
+
+	<div class="relative z-10 mx-auto max-w-[94rem] px-5 pb-9 pt-8 sm:px-8 md:pt-10 lg:pb-12 2xl:max-w-[102rem]">
+		<div class="flex flex-col gap-7 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+			<nav class="order-1" aria-label="breadcrumb">
+				<ol class="flex flex-wrap items-center gap-2 text-sm font-semibold text-r4f-muted">
+					<li>
+						<a
+							class="transition-colors hover:text-r4f-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							href={homeHref}
+						>
+							{t(lang, 'newsBreadcrumbHome')}
+						</a>
+					</li>
+					<li aria-hidden="true" class="text-r4f-line">›</li>
+					<li class="text-r4f-teal" aria-current="page">{t(lang, 'newsBreadcrumbCurrent')}</li>
+				</ol>
+			</nav>
+
+			<form
+				class="order-3 w-full lg:order-2 lg:w-auto lg:max-w-[40rem] lg:flex-1"
+				role="search"
+				method="get"
+				action={archiveHref}
+				data-news-search-form
+			>
+				<label class="sr-only" for="news-search">{t(lang, 'newsArchiveSearchLabel')}</label>
+				<div class="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-end">
+					<div
+						class="flex min-h-12 flex-1 items-center gap-2 rounded-full bg-r4f-card pl-4 pr-1.5 shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition focus-within:outline-2 focus-within:outline-r4f-sky lg:min-w-[19rem]"
+					>
+						<svg class="h-5 w-5 shrink-0 text-r4f-muted" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path
+								d="m21 21-4.3-4.3m1.55-5.45a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"></path>
+						</svg>
+						<input
+							id="news-search"
+							class="min-h-12 w-full bg-transparent text-base font-medium text-r4f-ink outline-none placeholder:text-r4f-muted/80"
+							type="search"
+							name="q"
+							autocomplete="off"
+							placeholder={t(lang, 'newsArchiveSearchPlaceholder')}
+							data-news-search
+						/>
+						<button
+							class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-r4f-sky text-white transition hover:bg-[#277fd0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							type="submit"
+							aria-label={t(lang, 'newsArchiveSearchButton')}
+						>
+							<svg class="h-[1.05rem] w-[1.05rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path
+									d="m21 21-4.3-4.3m1.55-5.45a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</button>
+					</div>
+
+					<div class="flex items-center gap-3">
+						<div
+							class="news-select relative flex min-h-12 items-center rounded-full bg-r4f-card shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition focus-within:outline-2 focus-within:outline-r4f-sky"
+						>
+							<label class="sr-only" for="news-category">{t(lang, 'newsArchiveBrowseLabel')}</label>
+							<select
+								id="news-category"
+								class="min-h-12 w-full cursor-pointer appearance-none rounded-full bg-transparent py-0 pl-5 pr-10 text-sm font-bold text-r4f-navy outline-none"
+								name="category"
+								data-news-category-select
+							>
+								<option value="all">{t(lang, 'newsArchiveCategoryAll')}</option>
+								{browseItems.map((item) => <option value={item.value}>{item.label}</option>)}
+							</select>
+							<svg
+								class="pointer-events-none absolute right-4 h-4 w-4 text-r4f-muted"
+								viewBox="0 0 24 24"
+								fill="none"
+								aria-hidden="true"
+							>
+								<path
+									d="m6 9 6 6 6-6"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</div>
+
+						<button
+							class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-r4f-card text-r4f-teal shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition hover:text-r4f-navy hover:outline-r4f-sky focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							type="submit"
+							aria-label={t(lang, 'newsArchiveFilterLabel')}
+						>
+							<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path d="M4 7h11M4 17h7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path>
+								<circle cx="18" cy="7" r="2.4" stroke="currentColor" stroke-width="1.9"></circle>
+								<circle cx="14" cy="17" r="2.4" stroke="currentColor" stroke-width="1.9"></circle>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="order-2 max-w-2xl lg:hidden">
+				<h1 class="font-display text-[clamp(2rem,6vw,2.6rem)] font-semibold leading-[1.1] text-r4f-navy">
+					{t(lang, 'newsArchiveTitle')}
+				</h1>
+				<p class="mt-3 text-base leading-7 text-r4f-muted">{t(lang, 'newsArchiveIntro')}</p>
+			</div>
+		</div>
+
+		<div class="mt-6 hidden max-w-3xl lg:block">
+			<h1 class="font-display text-[clamp(2.4rem,3.4vw,3.1rem)] font-semibold leading-[1.08] text-r4f-navy">
+				{t(lang, 'newsArchiveTitle')}
+			</h1>
+			<p class="mt-3 text-lg leading-8 text-r4f-muted">{t(lang, 'newsArchiveIntro')}</p>
+		</div>
+	</div>
+
+	<div class="news-hero__edge" aria-hidden="true"></div>
+</section>
+
+<style>
+	.news-hero {
+		background-image: radial-gradient(120% 140% at 100% 0%, rgb(69 160 243 / 8%) 0%, rgb(69 160 243 / 0%) 52%);
+	}
+
+	/* Faint concentric radar rings as brand texture, anchored top-right */
+	.news-hero__rings {
+		position: absolute;
+		inset: -14rem -10rem auto auto;
+		width: 36rem;
+		height: 36rem;
+		pointer-events: none;
+		background:
+			radial-gradient(circle, transparent 0 6.5rem, rgb(11 103 108 / 7%) 6.5rem 6.6rem, transparent 6.6rem) center /
+				100% 100% no-repeat,
+			radial-gradient(circle, transparent 0 10rem, rgb(11 103 108 / 6%) 10rem 10.1rem, transparent 10.1rem) center /
+				100% 100% no-repeat,
+			radial-gradient(circle, transparent 0 13.5rem, rgb(69 160 243 / 7%) 13.5rem 13.6rem, transparent 13.6rem) center /
+				100% 100% no-repeat;
+	}
+
+	/* Hairline that lets the hero settle onto the surface below without a hard border */
+	.news-hero__edge {
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--color-r4f-line) 18%, var(--color-r4f-line) 82%, transparent);
+	}
+
+	@media (max-width: 1023px) {
+		.news-hero__rings {
+			inset: -16rem -16rem auto auto;
+			width: 28rem;
+			height: 28rem;
+			opacity: 0.7;
+		}
+	}
+</style>

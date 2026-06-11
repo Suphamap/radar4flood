@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getPostDetail, newsDetailItems } from '../../data/newsDetails';
+import NewsDetailPage from '../../components/pages/NewsDetailPage.astro';
+
+export const getStaticPaths: GetStaticPaths = () =>
+	Object.keys(newsDetailItems).map((slug) => ({ params: { slug } }));
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	return Astro.redirect('/news');
+}
+
+const post = getPostDetail(slug);
+
+if (!post) {
+	return Astro.redirect('/news');
+}
+---
+
+<NewsDetailPage post={post} lang="th" />
