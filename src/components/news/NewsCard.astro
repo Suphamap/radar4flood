@@ -1,16 +1,18 @@
 ---
-import { localize, t } from '../../lib/i18n';
+import { localize, routePath, t } from '../../lib/i18n';
 import type { Lang } from '../../lib/i18n';
 import type { NewsCategory, NewsItem } from '../../types/content';
 
 interface Props {
 	item: NewsItem;
 	lang?: Lang;
-	variant?: 'featured' | 'latest' | 'highlight' | 'compact' | 'archive';
+	variant?: 'featured' | 'latest' | 'highlight' | 'compact' | 'archive' | 'numbered';
 	extraMore?: boolean;
+	index?: number;
 }
 
-const { item, lang = 'th', variant = 'compact', extraMore = false } = Astro.props;
+const { item, lang = 'th', variant = 'compact', extraMore = false, index } = Astro.props;
+const indexLabel = typeof index === 'number' ? String(index).padStart(2, '0') : undefined;
 
 const categoryLabels: Record<Lang, Record<NewsCategory, string>> = {
 	th: {
@@ -53,16 +55,19 @@ const fallbackImage = {
 const cardImage = item.image ?? fallbackImage;
 const imageAlt = localize(cardImage.alt, lang);
 const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} ${item.publishedAt}`.toLocaleLowerCase();
+const detailHref = routePath(lang, `/news/${item.slug}`);
 ---
 
 <article
 	class:list={[
-		'news-card group bg-r4f-card transition duration-200',
+		'news-card group relative bg-r4f-card transition duration-200',
 		variant === 'featured' && 'grid overflow-hidden rounded-2xl md:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)]',
 		variant === 'latest' && 'grid rounded-2xl p-4 sm:grid-cols-[9rem_1fr] sm:gap-5',
 		variant === 'highlight' && 'grid grid-cols-[3.25rem_1fr] gap-4 py-5',
 		variant === 'compact' && 'grid rounded-2xl p-6 sm:p-7',
 		variant === 'archive' && 'flex h-full flex-col overflow-hidden rounded-2xl',
+		variant === 'numbered' &&
+			'grid grid-cols-[2.75rem_minmax(0,1fr)_1.25rem] items-start gap-4 rounded-2xl p-5 outline outline-1 outline-r4f-line transition hover:outline-r4f-sky sm:grid-cols-[3.25rem_minmax(0,1fr)_1.5rem] sm:gap-5 sm:p-6',
 	]}
 	data-news-card
 	data-category={item.category}
@@ -136,6 +141,14 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 		)
 	}
 
+	{
+		variant === 'numbered' && (
+			<span class="font-display text-3xl font-bold leading-none text-r4f-navy/25 sm:text-[2.5rem]" aria-hidden="true">
+				{indexLabel}
+			</span>
+		)
+	}
+
 	<div
 		class:list={[
 			variant === 'featured' && 'flex min-w-0 flex-col justify-center px-6 py-7 sm:px-8 lg:px-10',
@@ -143,6 +156,7 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 			variant === 'highlight' && 'min-w-0',
 			variant === 'compact' && 'min-h-[10rem]',
 			variant === 'archive' && 'flex flex-1 flex-col p-6 sm:p-7',
+			variant === 'numbered' && 'min-w-0',
 		]}
 	>
 		<div class="flex flex-wrap items-center gap-3">
@@ -159,21 +173,54 @@ const searchable = `${title} ${excerpt} ${categoryLabels[lang][item.category]} $
 
 		<h3
 			class:list={[
-				'font-display font-semibold leading-[1.28] text-r4f-navy',
+				'font-display font-semibold leading-[1.28] text-r4f-navy transition-colors duration-200 group-hover:text-r4f-teal',
 				variant === 'featured' && 'mt-5 text-[clamp(1.55rem,2.5vw,2.25rem)]',
 				variant === 'latest' && 'mt-4 text-xl',
 				variant === 'highlight' && 'mt-3 text-lg',
 				variant === 'compact' && 'mt-5 text-2xl',
 				variant === 'archive' && 'mt-5 text-[1.35rem]',
+				variant === 'numbered' && 'text-lg leading-[1.35] sm:text-xl',
 			]}
 		>
-			{title}
+			<a
+				href={detailHref}
+				class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-r4f-sky"
+			>
+				{title}
+			</a>
 		</h3>
 
 		{
 			variant !== 'highlight' && (
-				<p class:list={['mt-4 leading-8 text-r4f-muted', variant === 'latest' ? 'text-sm' : 'text-base']}>{excerpt}</p>
+				<p
+					class:list={[
+						'text-r4f-muted',
+						variant === 'numbered' ? 'mt-2 line-clamp-2 text-sm leading-7' : 'mt-4 leading-8',
+						variant === 'latest' || variant === 'numbered' ? 'text-sm' : 'text-base',
+					]}
+				>
+					{excerpt}
+				</p>
 			)
 		}
 	</div>
+
+	{
+		variant === 'numbered' && (
+			<span
+				class="mt-1 flex justify-end text-r4f-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:text-r4f-teal"
+				aria-hidden="true"
+			>
+				<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+					<path
+						d="m9 6 6 6-6 6"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+				</svg>
+			</span>
+		)
+	}
 </article>

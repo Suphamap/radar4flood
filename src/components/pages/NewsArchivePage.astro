@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import NewsArchiveHero from '../news/NewsArchiveHero.astro';
 import NewsCard from '../news/NewsCard.astro';
+import NewsCarousel from '../news/NewsCarousel.astro';
 import NewsSectionHeading from '../news/NewsSectionHeading.astro';
 import { getNewsBySection, newsCategories, newsItems } from '../../data/news';
 import { routePath, t } from '../../lib/i18n';
@@ -32,6 +33,7 @@ const latestNews = getNewsBySection('latest');
 const todayNews = [...topNews, ...latestNews];
 const highlights = getNewsBySection('highlight');
 const moreNews = getNewsBySection('more');
+const carouselNews = [...topNews, ...latestNews, highlights[0]].filter(Boolean);
 const listNews = [...highlights, ...moreNews, ...latestNews, ...topNews];
 const allNewsHref = routePath(lang, '/news?view=all');
 ---
@@ -49,14 +51,9 @@ const allNewsHref = routePath(lang, '/news?view=all');
 
 		<section class="bg-r4f-surface" data-default-news-section>
 			<div class="mx-auto max-w-[94rem] px-5 py-9 sm:px-8 lg:py-12 2xl:max-w-[102rem]">
-				<div data-news-section>
-					<NewsSectionHeading title={t(lang, 'newsArchiveTopTitle')} lang={lang} href={allNewsHref} />
-					<div class="mt-5">
-						{topNews.map((item) => <NewsCard item={item} lang={lang} variant="featured" />)}
-						<p class="hidden rounded-2xl bg-r4f-low p-8 text-r4f-muted" data-news-empty>
-							{t(lang, 'newsArchiveEmpty')}
-						</p>
-					</div>
+				<NewsSectionHeading title={t(lang, 'newsArchiveTopTitle')} lang={lang} href={allNewsHref} />
+				<div class="mt-5 sm:mt-6">
+					<NewsCarousel items={carouselNews} lang={lang} />
 				</div>
 			</div>
 		</section>
@@ -113,10 +110,10 @@ const allNewsHref = routePath(lang, '/news?view=all');
 			<div class="mx-auto max-w-[94rem] px-5 py-10 sm:px-8 lg:py-14 2xl:max-w-[102rem]">
 				<div data-news-section data-all-news-list>
 					<NewsSectionHeading title={t(lang, 'newsArchiveMoreTitle')} lang={lang} href={allNewsHref} />
-					<div class="mt-5 grid gap-5 lg:grid-cols-2">
+					<div class="mt-5 grid gap-4 lg:grid-cols-2">
 						{
 							listNews.map((item, index) => (
-								<NewsCard item={item} lang={lang} variant="compact" extraMore={index > 3} />
+								<NewsCard item={item} lang={lang} variant="numbered" index={index + 1} extraMore={index > 5} />
 							))
 						}
 					</div>
@@ -145,7 +142,7 @@ const allNewsHref = routePath(lang, '/news?view=all');
 
 	if (archive) {
 		const searchInput = archive.querySelector<HTMLInputElement>('[data-news-search]');
-		const filterLinks = Array.from(archive.querySelectorAll<HTMLElement>('[data-news-filter]'));
+		const categorySelect = archive.querySelector<HTMLSelectElement>('[data-news-category-select]');
 		const defaultSections = Array.from(archive.querySelectorAll<HTMLElement>('[data-default-news-section]'));
 		const resultsSection = archive.querySelector<HTMLElement>('[data-news-results-section]');
 		const resultsTitle = archive.querySelector<HTMLElement>('[data-news-results-title]');
@@ -214,13 +211,17 @@ const allNewsHref = routePath(lang, '/news?view=all');
 			searchInput.value = params.get('q') ?? '';
 		}
 
-		filterLinks.forEach((link) => {
-			const isActive = (link.dataset.newsFilter ?? 'all') === activeCategory;
-			link.setAttribute('aria-pressed', String(isActive));
-			if (isActive) {
-				activeCategoryLabel = link.dataset.newsFilterLabel ?? activeCategory;
+		if (categorySelect) {
+			const hasOption = Array.from(categorySelect.options).some((option) => option.value === activeCategory);
+			categorySelect.value = hasOption ? activeCategory : 'all';
+			const selected = categorySelect.options[categorySelect.selectedIndex];
+			if (selected && activeCategory !== 'all') {
+				activeCategoryLabel = selected.text;
 			}
-		});
+			categorySelect.addEventListener('change', () => {
+				categorySelect.form?.requestSubmit();
+			});
+		}
 
 		applyFilters();
 	}

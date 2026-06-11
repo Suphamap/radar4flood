@@ -15,25 +15,42 @@ interface Props {
 
 const { lang = 'th', browseItems } = Astro.props;
 const archiveHref = routeHref(lang, 'news');
+const homeHref = routeHref(lang, 'home');
 ---
 
-<section class="news-hero relative isolate overflow-hidden bg-r4f-navy text-white">
-	<div
-		class="mx-auto grid min-h-[28rem] max-w-[94rem] gap-10 px-5 pb-10 pt-14 sm:px-8 md:pb-12 md:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(21rem,0.86fr)] lg:items-end 2xl:max-w-[102rem]"
-	>
-		<div class="relative z-10 max-w-3xl">
-			<h1 class="font-display text-[clamp(2.9rem,7vw,5.75rem)] font-semibold leading-[1.04] tracking-normal">
-				{t(lang, 'newsArchiveTitle')}
-			</h1>
-			<p class="mt-5 max-w-2xl text-base leading-8 text-white/82 sm:text-lg sm:leading-9">
-				{t(lang, 'newsArchiveIntro')}
-			</p>
+<section class="news-hero relative isolate overflow-hidden bg-r4f-low text-r4f-navy">
+	<div class="news-hero__rings" aria-hidden="true"></div>
 
-			<form class="mt-8 max-w-2xl" role="search" method="get" action={archiveHref} data-news-search-form>
-				<label class="text-sm font-bold text-white" for="news-search">{t(lang, 'newsArchiveSearchLabel')}</label>
-				<div class="mt-3 flex flex-col gap-3 rounded-2xl bg-white p-2 sm:flex-row sm:items-center">
-					<div class="flex min-h-12 flex-1 items-center gap-3 px-3 text-r4f-ink">
-						<svg class="h-5 w-5 shrink-0 text-r4f-teal" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+	<div class="relative z-10 mx-auto max-w-[94rem] px-5 pb-9 pt-8 sm:px-8 md:pt-10 lg:pb-12 2xl:max-w-[102rem]">
+		<div class="flex flex-col gap-7 lg:flex-row lg:items-start lg:justify-between lg:gap-10">
+			<nav class="order-1" aria-label="breadcrumb">
+				<ol class="flex flex-wrap items-center gap-2 text-sm font-semibold text-r4f-muted">
+					<li>
+						<a
+							class="transition-colors hover:text-r4f-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							href={homeHref}
+						>
+							{t(lang, 'newsBreadcrumbHome')}
+						</a>
+					</li>
+					<li aria-hidden="true" class="text-r4f-line">›</li>
+					<li class="text-r4f-teal" aria-current="page">{t(lang, 'newsBreadcrumbCurrent')}</li>
+				</ol>
+			</nav>
+
+			<form
+				class="order-3 w-full lg:order-2 lg:w-auto lg:max-w-[40rem] lg:flex-1"
+				role="search"
+				method="get"
+				action={archiveHref}
+				data-news-search-form
+			>
+				<label class="sr-only" for="news-search">{t(lang, 'newsArchiveSearchLabel')}</label>
+				<div class="flex flex-col gap-3 sm:flex-row sm:items-center lg:justify-end">
+					<div
+						class="flex min-h-12 flex-1 items-center gap-2 rounded-full bg-r4f-card pl-4 pr-1.5 shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition focus-within:outline-2 focus-within:outline-r4f-sky lg:min-w-[19rem]"
+					>
+						<svg class="h-5 w-5 shrink-0 text-r4f-muted" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 							<path
 								d="m21 21-4.3-4.3m1.55-5.45a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
 								stroke="currentColor"
@@ -43,80 +60,127 @@ const archiveHref = routeHref(lang, 'news');
 						</svg>
 						<input
 							id="news-search"
-							class="min-h-12 w-full bg-transparent text-base font-medium text-r4f-ink outline-none placeholder:text-[#52677E]"
+							class="min-h-12 w-full bg-transparent text-base font-medium text-r4f-ink outline-none placeholder:text-r4f-muted/80"
 							type="search"
 							name="q"
 							autocomplete="off"
 							placeholder={t(lang, 'newsArchiveSearchPlaceholder')}
 							data-news-search
 						/>
+						<button
+							class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-r4f-sky text-white transition hover:bg-[#277fd0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							type="submit"
+							aria-label={t(lang, 'newsArchiveSearchButton')}
+						>
+							<svg class="h-[1.05rem] w-[1.05rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path
+									d="m21 21-4.3-4.3m1.55-5.45a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+									stroke="currentColor"
+									stroke-width="2.2"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</button>
 					</div>
-					<button
-						class="inline-flex min-h-12 items-center justify-center rounded-xl bg-r4f-sky px-6 text-sm font-bold text-white transition hover:bg-[#277fd0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-						type="submit"
-					>
-						{t(lang, 'newsArchiveSearchButton')}
-					</button>
+
+					<div class="flex items-center gap-3">
+						<div
+							class="news-select relative flex min-h-12 items-center rounded-full bg-r4f-card shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition focus-within:outline-2 focus-within:outline-r4f-sky"
+						>
+							<label class="sr-only" for="news-category">{t(lang, 'newsArchiveBrowseLabel')}</label>
+							<select
+								id="news-category"
+								class="min-h-12 w-full cursor-pointer appearance-none rounded-full bg-transparent py-0 pl-5 pr-10 text-sm font-bold text-r4f-navy outline-none"
+								name="category"
+								data-news-category-select
+							>
+								<option value="all">{t(lang, 'newsArchiveCategoryAll')}</option>
+								{browseItems.map((item) => <option value={item.value}>{item.label}</option>)}
+							</select>
+							<svg
+								class="pointer-events-none absolute right-4 h-4 w-4 text-r4f-muted"
+								viewBox="0 0 24 24"
+								fill="none"
+								aria-hidden="true"
+							>
+								<path
+									d="m6 9 6 6 6-6"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</div>
+
+						<button
+							class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-r4f-card text-r4f-teal shadow-[0_1px_2px_rgba(0,30,69,0.06)] outline outline-1 outline-r4f-line transition hover:text-r4f-navy hover:outline-r4f-sky focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-r4f-sky"
+							type="submit"
+							aria-label={t(lang, 'newsArchiveFilterLabel')}
+						>
+							<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+								<path d="M4 7h11M4 17h7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path>
+								<circle cx="18" cy="7" r="2.4" stroke="currentColor" stroke-width="1.9"></circle>
+								<circle cx="14" cy="17" r="2.4" stroke="currentColor" stroke-width="1.9"></circle>
+							</svg>
+						</button>
+					</div>
 				</div>
 			</form>
-		</div>
 
-		<div class="relative z-10 lg:pb-4">
-			<p class="text-base font-bold text-white">{t(lang, 'newsArchiveBrowseLabel')}</p>
-			<div class="mt-5 flex flex-wrap gap-x-6 gap-y-3" aria-label={t(lang, 'newsArchiveBrowseLabel')}>
-				<a
-					class="browse-filter text-left text-sm font-bold text-sky-100 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
-					href={archiveHref}
-					data-news-filter="all"
-					data-news-filter-label={t(lang, 'newsArchiveAll')}
-					aria-pressed="true"
-				>
-					{t(lang, 'newsArchiveAll')}
-					<span aria-hidden="true">›</span>
-				</a>
-				{
-					browseItems.map((item) => (
-						<a
-							class="browse-filter text-left text-sm font-bold text-sky-100 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
-							href={`${archiveHref}?category=${encodeURIComponent(item.value)}`}
-							data-news-filter={item.value}
-							data-news-filter-label={item.label}
-							aria-pressed="false"
-						>
-							{item.label}
-							<span aria-hidden="true">›</span>
-						</a>
-					))
-				}
+			<div class="order-2 max-w-2xl lg:hidden">
+				<h1 class="font-display text-[clamp(2rem,6vw,2.6rem)] font-semibold leading-[1.1] text-r4f-navy">
+					{t(lang, 'newsArchiveTitle')}
+				</h1>
+				<p class="mt-3 text-base leading-7 text-r4f-muted">{t(lang, 'newsArchiveIntro')}</p>
 			</div>
 		</div>
+
+		<div class="mt-6 hidden max-w-3xl lg:block">
+			<h1 class="font-display text-[clamp(2.4rem,3.4vw,3.1rem)] font-semibold leading-[1.08] text-r4f-navy">
+				{t(lang, 'newsArchiveTitle')}
+			</h1>
+			<p class="mt-3 text-lg leading-8 text-r4f-muted">{t(lang, 'newsArchiveIntro')}</p>
+		</div>
 	</div>
+
+	<div class="news-hero__edge" aria-hidden="true"></div>
 </section>
 
 <style>
 	.news-hero {
-		background-image:
-			linear-gradient(90deg, rgb(0 17 44 / 88%) 0%, rgb(0 30 69 / 72%) 46%, rgb(0 30 69 / 44%) 100%),
-			url('/radar4flood-hero-background.svg');
-		background-position: center top;
-		background-repeat: no-repeat;
-		background-size: cover;
+		background-image: radial-gradient(120% 140% at 100% 0%, rgb(69 160 243 / 8%) 0%, rgb(69 160 243 / 0%) 52%);
 	}
 
-	.news-hero::before {
+	/* Faint concentric radar rings as brand texture, anchored top-right */
+	.news-hero__rings {
 		position: absolute;
-		inset: auto -12% -32% 44%;
-		height: 25rem;
-		content: '';
-		background: radial-gradient(circle, rgb(69 160 243 / 20%) 0%, rgb(69 160 243 / 0%) 66%);
+		inset: -14rem -10rem auto auto;
+		width: 36rem;
+		height: 36rem;
 		pointer-events: none;
+		background:
+			radial-gradient(circle, transparent 0 6.5rem, rgb(11 103 108 / 7%) 6.5rem 6.6rem, transparent 6.6rem) center /
+				100% 100% no-repeat,
+			radial-gradient(circle, transparent 0 10rem, rgb(11 103 108 / 6%) 10rem 10.1rem, transparent 10.1rem) center /
+				100% 100% no-repeat,
+			radial-gradient(circle, transparent 0 13.5rem, rgb(69 160 243 / 7%) 13.5rem 13.6rem, transparent 13.6rem) center /
+				100% 100% no-repeat;
 	}
 
-	.browse-filter[aria-pressed='true'] {
-		color: white;
-		text-decoration: underline;
-		text-decoration-color: var(--color-r4f-sky);
-		text-decoration-thickness: 2px;
-		text-underline-offset: 0.55rem;
+	/* Hairline that lets the hero settle onto the surface below without a hard border */
+	.news-hero__edge {
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--color-r4f-line) 18%, var(--color-r4f-line) 82%, transparent);
+	}
+
+	@media (max-width: 1023px) {
+		.news-hero__rings {
+			inset: -16rem -16rem auto auto;
+			width: 28rem;
+			height: 28rem;
+			opacity: 0.7;
+		}
 	}
 </style>

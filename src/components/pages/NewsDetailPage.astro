@@ -55,19 +55,13 @@ const jsonLd = JSON.stringify({
 });
 ---
 
-<Layout
-	title={`${title} | Radar4Flood`}
-	description={excerpt}
-	lang={lang}
-	ogImage={post.image?.src}
-	ogType="article"
->
+<Layout title={`${title} | Radar4Flood`} description={excerpt} lang={lang} ogImage={post.image?.src} ogType="article">
 	<Fragment slot="head">
 		<script type="application/ld+json" set:html={jsonLd} />
 	</Fragment>
 
 	<article class="bg-r4f-surface pb-20">
-		<div class="mx-auto max-w-[45rem] px-5 pt-8 sm:px-8">
+		<div class="mx-auto max-w-[54rem] px-5 pt-8 sm:px-8">
 			<a
 				class="inline-flex items-center gap-1.5 text-sm font-semibold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
 				href={newsHref}
@@ -79,7 +73,7 @@ const jsonLd = JSON.stringify({
 
 		{
 			post.image && (
-				<div class="mx-auto mt-6 max-w-[56rem] px-5 sm:px-8">
+				<div class="mx-auto mt-6 max-w-[64rem] px-5 sm:px-8">
 					<figure class="overflow-hidden rounded-2xl">
 						<img
 							src={post.image.src}
@@ -94,7 +88,7 @@ const jsonLd = JSON.stringify({
 			)
 		}
 
-		<header class="mx-auto mt-8 max-w-[45rem] px-5 sm:px-8">
+		<header class="mx-auto mt-8 max-w-[54rem] px-5 sm:px-8">
 			<div class="flex flex-wrap items-center gap-3">
 				<span class="inline-flex rounded-full bg-[#EAF6F7] px-3 py-1 text-xs font-bold text-r4f-teal">
 					{categoryLabels[post.category]}
@@ -138,21 +132,19 @@ const jsonLd = JSON.stringify({
 
 		{
 			showThaiOnly && (
-				<div class="mx-auto mt-6 max-w-[45rem] px-5 sm:px-8">
-					<p class="rounded-xl bg-r4f-low px-5 py-4 text-sm text-r4f-muted">
-						{t(lang, 'newsDetailThaiOnly')}
-					</p>
+				<div class="mx-auto mt-6 max-w-[54rem] px-5 sm:px-8">
+					<p class="rounded-xl bg-r4f-low px-5 py-4 text-sm text-r4f-muted">{t(lang, 'newsDetailThaiOnly')}</p>
 				</div>
 			)
 		}
 
-		<section class="mx-auto mt-8 max-w-[45rem] px-5 sm:px-8">
+		<section class="mx-auto mt-8 max-w-[54rem] px-5 sm:px-8">
 			<PortableTextRenderer blocks={body} lang={lang} />
 		</section>
 
 		{
 			post.galleryImages && post.galleryImages.length > 0 && (
-				<div class="mx-auto mt-10 max-w-[56rem] px-5 sm:px-8">
+				<div class="mx-auto mt-10 max-w-[64rem] px-5 sm:px-8">
 					<NewsGallery images={post.galleryImages} lang={lang} />
 				</div>
 			)
@@ -160,13 +152,13 @@ const jsonLd = JSON.stringify({
 
 		{
 			post.author && (
-				<div class="mx-auto mt-12 max-w-[45rem] px-5 sm:px-8">
+				<div class="mx-auto mt-12 max-w-[54rem] px-5 sm:px-8">
 					<AuthorCard author={post.author} lang={lang} />
 				</div>
 			)
 		}
 
-		<div class="mx-auto mt-12 max-w-[45rem] px-5 sm:px-8">
+		<div class="mx-auto mt-12 max-w-[54rem] px-5 sm:px-8">
 			<a
 				class="inline-flex items-center gap-1.5 text-sm font-semibold text-r4f-teal transition hover:text-r4f-navy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-r4f-sky"
 				href={newsHref}
