@@ -1,0 +1,52 @@
+---
+import { localize, t } from '../../lib/i18n';
+import type { BilingualText, Lang } from '../../lib/i18n';
+
+/**
+ * Reserved frame for a real photo/screenshot to be dropped in later.
+ * Replace the placeholder body with an <img> when the asset is ready;
+ * the frame, ratio, and caption stay the same.
+ */
+interface Props {
+	lang: Lang;
+	note: BilingualText;
+	ratio?: string;
+	class?: string;
+}
+
+const { lang, note, ratio = '16 / 10', class: className = '' } = Astro.props;
+---
+
+<figure
+	class:list={['r4f-image-slot relative overflow-hidden rounded-2xl', className]}
+	style={`aspect-ratio: ${ratio};`}
+	data-image-slot
+>
+	<div class="r4f-grid-texture absolute inset-0" aria-hidden="true"></div>
+	<div class="relative flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+		<svg
+			class="h-9 w-9 text-sky-200/45"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			aria-hidden="true"
+		>
+			<rect x="3" y="5" width="18" height="14" rx="2"></rect>
+			<circle cx="9" cy="10" r="1.6"></circle>
+			<path d="m5 17 4.2-4.2a1.5 1.5 0 0 1 2.1 0L17 18.5M14.5 15l1.4-1.4a1.5 1.5 0 0 1 2.1 0L21 16.6"></path>
+		</svg>
+		<p class="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-sky-200/55">
+			{t(lang, 'r4fImageSlotLabel')}
+		</p>
+		<figcaption class="max-w-xs text-sm leading-6 text-sky-100/75">{localize(note, lang)}</figcaption>
+	</div>
+</figure>
+
+<style>
+	.r4f-image-slot {
+		background: rgb(255 255 255 / 4%);
+		outline: 1.5px dashed rgb(143 196 247 / 30%);
+		outline-offset: -10px;
+	}
+</style>

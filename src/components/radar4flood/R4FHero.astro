@@ -1,0 +1,150 @@
+---
+import { localize, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import { heroContent, heroCadence, serviceBasins } from '../../data/radar4flood';
+
+interface Props {
+	lang: Lang;
+	forecastUrl: string;
+}
+
+const { lang, forecastUrl } = Astro.props;
+
+// deterministic pseudo-random rain layout so SSR output is stable
+const rainDrops = Array.from({ length: 16 }, (_, i) => ({
+	left: `${(i * 61.8) % 100}%`,
+	delay: `${((i * 0.47) % 2.8).toFixed(2)}s`,
+	duration: `${(2.2 + ((i * 0.31) % 1.4)).toFixed(2)}s`,
+}));
+
+const blips = [
+	{ top: '26%', left: '58%', delay: '0.8s' },
+	{ top: '44%', left: '74%', delay: '2.4s' },
+	{ top: '62%', left: '52%', delay: '4.1s' },
+	{ top: '36%', left: '38%', delay: '5.6s' },
+];
+---
+
+<section class="relative isolate overflow-hidden">
+	<div class="r4f-grid-texture absolute inset-0" aria-hidden="true"></div>
+
+	<!-- rain field -->
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+		{
+			rainDrops.map((drop) => (
+				<span
+					class="r4f-rain"
+					style={`left:${drop.left}; --rain-delay:${drop.delay}; --rain-duration:${drop.duration};`}
+				/>
+			))
+		}
+	</div>
+
+	<!-- radar scope -->
+	<div
+		class="pointer-events-none absolute -right-[14rem] top-1/2 hidden aspect-square w-[44rem] -translate-y-1/2 lg:block xl:-right-[10rem] xl:w-[52rem]"
+		aria-hidden="true"
+	>
+		<svg class="absolute inset-0 h-full w-full" viewBox="0 0 100 100">
+			{
+				[12, 24, 36, 48].map((r) => (
+					<circle cx="50" cy="50" r={r} fill="none" stroke="rgb(143 196 247 / 0.16)" stroke-width="0.18" />
+				))
+			}
+			<line x1="2" y1="50" x2="98" y2="50" stroke="rgb(143 196 247 / 0.1)" stroke-width="0.18"></line>
+			<line x1="50" y1="2" x2="50" y2="98" stroke="rgb(143 196 247 / 0.1)" stroke-width="0.18"></line>
+			<line x1="16" y1="16" x2="84" y2="84" stroke="rgb(143 196 247 / 0.07)" stroke-width="0.18"></line>
+			<line x1="84" y1="16" x2="16" y2="84" stroke="rgb(143 196 247 / 0.07)" stroke-width="0.18"></line>
+			<circle cx="50" cy="50" r="1" fill="rgb(143 228 255 / 0.8)"></circle>
+		</svg>
+		<div class="r4f-sweep"></div>
+		{
+			blips.map((blip) => (
+				<span class="r4f-blip" style={`top:${blip.top}; left:${blip.left}; --blip-delay:${blip.delay};`} />
+			))
+		}
+	</div>
+
+	<div
+		class="relative mx-auto flex min-h-[calc(100svh-4.5rem)] max-w-[94rem] flex-col justify-center px-5 py-16 sm:px-8 md:py-20 2xl:max-w-[102rem]"
+	>
+		<p class="r4f-kicker" data-reveal>{localize(heroContent.kicker, lang)}</p>
+
+		<h1
+			class="mt-6 max-w-4xl font-display text-[clamp(2.75rem,7.5vw,5.5rem)] font-semibold leading-[1.06] text-white"
+			data-reveal
+			style="--reveal-i: 1;"
+		>
+			{localize(heroContent.titleLead, lang)}<br />
+			<span class="text-r4f-sky">{localize(heroContent.titleAccent, lang)}</span>
+		</h1>
+
+		<p class="mt-7 max-w-2xl text-lg font-medium leading-9 text-sky-50 sm:text-xl" data-reveal style="--reveal-i: 2;">
+			{heroContent.subtitle.th}
+		</p>
+		<p class="mt-2 max-w-2xl text-sm italic leading-7 text-sky-200/60" data-reveal style="--reveal-i: 2;">
+			{heroContent.subtitle.en}
+		</p>
+		<p class="mt-5 max-w-2xl text-base leading-8 text-sky-100/72" data-reveal style="--reveal-i: 3;">
+			{localize(heroContent.description, lang)}
+		</p>
+
+		<div class="mt-9 flex flex-wrap gap-3" data-reveal style="--reveal-i: 4;">
+			<a
+				class="inline-flex min-h-11 items-center gap-2 rounded-full bg-r4f-teal px-6 py-3 text-sm font-bold text-white transition hover:bg-[#0d7b81] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+				href={forecastUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{t(lang, 'r4fOpenForecast')}
+				<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+					<path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</a>
+			<a
+				class="inline-flex min-h-11 items-center rounded-full bg-white/10 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+				href="#r4f-features"
+			>
+				{t(lang, 'r4fExploreFeatures')}
+			</a>
+		</div>
+
+		<!-- cadence stats -->
+		<dl
+			class="mt-14 grid max-w-3xl grid-cols-1 gap-px overflow-hidden rounded-2xl bg-white/8 sm:grid-cols-3"
+			data-reveal
+			style="--reveal-i: 5;"
+		>
+			{
+				heroCadence.map((stat) => (
+					<div class="bg-[#001737]/72 px-6 py-5 backdrop-blur">
+						<dt class="order-last mt-1 text-sm leading-6 text-sky-100/68">{localize(stat.label, lang)}</dt>
+						<dd class="font-display text-4xl font-semibold text-white">
+							{stat.value}
+							<span class="ml-1.5 text-base font-medium text-sky-200/85">{localize(stat.unit, lang)}</span>
+						</dd>
+					</div>
+				))
+			}
+		</dl>
+
+		<!-- service basins -->
+		<ul class="mt-6 flex flex-wrap gap-2.5" data-reveal style="--reveal-i: 6;">
+			{
+				serviceBasins.map((basin) => (
+					<li class="inline-flex items-center gap-2 rounded-full bg-white/7 px-4 py-2 text-sm font-semibold text-sky-50/92">
+						<span class="h-1.5 w-1.5 rounded-full bg-r4f-sky" aria-hidden="true" />
+						{localize(basin, lang)}
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="r4f-scroll-cue mt-14 flex items-center gap-3 text-sm font-semibold text-sky-200/60" aria-hidden="true">
+			<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+				<path d="M12 5v14m0 0 5-5m-5 5-5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+			</svg>
+			{t(lang, 'r4fScrollCue')}
+		</div>
+	</div>
+</section>

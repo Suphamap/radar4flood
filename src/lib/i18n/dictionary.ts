@@ -87,6 +87,17 @@ const th = {
 	pubDescription: 'บทความวารสาร รายงานการประชุม และเอกสารโครงการจากทีมวิจัย Radar4Flood',
 	pubViewAll: 'ดูผลงานวิชาการทั้งหมด',
 
+	// Radar4Flood system page
+	r4fMetaTitle: 'Radar4Flood | ระบบคาดการณ์น้ำท่วมฉับพลันด้วยฝนเรดาร์',
+	r4fMetaDescription:
+		'รู้จักระบบ Radar4Flood — คาดการณ์น้ำท่วมฉับพลันและจำลองการกัดเซาะหน้าดินแบบใกล้เวลาจริงด้วยผลิตภัณฑ์ฝนจากเรดาร์ พร้อมฟีเจอร์หลัก พื้นที่ศึกษา และช่องทางใช้งานจริง',
+	r4fScrollCue: 'เลื่อนเพื่อสำรวจระบบ',
+	r4fImageSlotLabel: 'พื้นที่สำหรับภาพจริง',
+	r4fOpenForecast: 'เปิดระบบพยากรณ์',
+	r4fExploreFeatures: 'สำรวจฟีเจอร์ทั้งหมด',
+	r4fOpenWebApp: 'เปิด Web Application',
+	r4fDownloadApp: 'ดาวน์โหลดแอปพลิเคชัน',
+
 	// Forecast CTA
 	forecastCtaTitle: 'ทางเข้าระบบ Radar4Flood',
 	forecastCtaDescription:

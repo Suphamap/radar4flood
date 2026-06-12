@@ -1,0 +1,123 @@
+---
+import { localize, t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import { platformsIntro, webPlatform, mobilePlatform } from '../../data/radar4flood';
+import SectionHeading from './SectionHeading.astro';
+import ImageSlot from './ImageSlot.astro';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative py-24 sm:py-32" id="r4f-platforms">
+	<div class="mx-auto max-w-[94rem] px-5 sm:px-8 2xl:max-w-[102rem]">
+		<SectionHeading lang={lang} chapter="05" kicker={platformsIntro.kicker} title={platformsIntro.title} />
+
+		<div class="mt-14 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+			<!-- web application -->
+			<article class="flex flex-col gap-8 rounded-2xl bg-white/5 p-7 sm:p-9" data-reveal>
+				<div>
+					<p class="text-xs font-bold tracking-[0.16em] text-r4f-sky uppercase">{t(lang, 'r4fOpenWebApp')}</p>
+					<h3 class="mt-3 font-display text-2xl font-semibold text-white">{localize(webPlatform.title, lang)}</h3>
+					<p class="mt-3 max-w-xl text-[0.95rem] leading-8 text-sky-100/74">{localize(webPlatform.body, lang)}</p>
+				</div>
+
+				<!-- browser frame -->
+				<figure class="overflow-hidden rounded-xl bg-[#001230]">
+					<div class="flex items-center gap-1.5 px-4 py-3" aria-hidden="true">
+						<span class="h-2.5 w-2.5 rounded-full bg-white/15"></span>
+						<span class="h-2.5 w-2.5 rounded-full bg-white/15"></span>
+						<span class="h-2.5 w-2.5 rounded-full bg-white/15"></span>
+						<span class="ml-3 hidden flex-1 rounded-full bg-white/7 px-4 py-1 text-[0.7rem] text-sky-200/50 sm:block">
+							smradar4flood.eng.ku.ac.th
+						</span>
+					</div>
+					<ImageSlot lang={lang} note={webPlatform.imageNote} ratio="16 / 9" class="!rounded-none" />
+				</figure>
+
+				<ul class="grid gap-2.5 sm:grid-cols-2">
+					{
+						webPlatform.highlights.map((item) => (
+							<li class="flex items-center gap-2.5 text-sm font-medium text-sky-50/88">
+								<svg
+									class="h-4 w-4 shrink-0 text-r4f-sky"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.5"
+									aria-hidden="true"
+								>
+									<path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+								{localize(item, lang)}
+							</li>
+						))
+					}
+				</ul>
+
+				<div class="mt-auto flex flex-wrap gap-3">
+					{
+						webPlatform.links.map((link) => (
+							<a
+								class="inline-flex min-h-11 items-center gap-2 rounded-full bg-r4f-teal px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d7b81] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+								href={link.href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{localize(link.label, lang)}
+								<svg
+									class="h-4 w-4"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									aria-hidden="true"
+								>
+									<path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round" />
+								</svg>
+							</a>
+						))
+					}
+				</div>
+			</article>
+
+			<!-- mobile application -->
+			<article class="flex flex-col gap-8 rounded-2xl bg-white/5 p-7 sm:p-9" data-reveal style="--reveal-i: 1;">
+				<div>
+					<p class="text-xs font-bold tracking-[0.16em] text-r4f-sky uppercase">{t(lang, 'r4fDownloadApp')}</p>
+					<h3 class="mt-3 font-display text-2xl font-semibold text-white">{localize(mobilePlatform.title, lang)}</h3>
+					<p class="mt-3 text-[0.95rem] leading-8 text-sky-100/74">{localize(mobilePlatform.body, lang)}</p>
+				</div>
+
+				<!-- phone frame -->
+				<figure class="mx-auto w-full max-w-[15rem] rounded-[2rem] bg-[#001230] p-2.5">
+					<div class="mx-auto mb-2 h-1.5 w-16 rounded-full bg-white/12" aria-hidden="true"></div>
+					<ImageSlot lang={lang} note={mobilePlatform.imageNote} ratio="9 / 17" class="!rounded-[1.5rem]" />
+				</figure>
+
+				<ul class="flex flex-col gap-2.5">
+					{
+						mobilePlatform.menus.map((item) => (
+							<li class="flex items-center gap-2.5 text-sm font-medium text-sky-50/88">
+								<span class="h-1.5 w-1.5 shrink-0 rounded-full bg-r4f-sky" aria-hidden="true" />
+								{localize(item, lang)}
+							</li>
+						))
+					}
+				</ul>
+
+				<div class="mt-auto flex flex-wrap gap-2.5">
+					<span class="inline-flex items-center rounded-full bg-white/8 px-4 py-2 text-sm font-bold text-sky-50"
+						>iOS · App Store</span
+					>
+					<span class="inline-flex items-center rounded-full bg-white/8 px-4 py-2 text-sm font-bold text-sky-50"
+						>Android · Google Play</span
+					>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
