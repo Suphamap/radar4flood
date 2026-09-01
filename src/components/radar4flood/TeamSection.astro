@@ -1,0 +1,54 @@
+---
+import { localize } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import { teamContent } from '../../data/radar4flood';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative py-24 sm:py-32" id="r4f-team">
+	<div class="mx-auto max-w-[94rem] px-5 sm:px-8 2xl:max-w-[102rem]">
+		<SectionHeading
+			lang={lang}
+			chapter="07"
+			kicker={teamContent.kicker}
+			title={teamContent.title}
+			body={teamContent.developer}
+		/>
+
+		<div class="mt-14 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+			<div class="rounded-2xl bg-white/5 p-7 sm:p-9" data-reveal>
+				<ul class="flex flex-col gap-6">
+					{
+						teamContent.leads.map((lead) => (
+							<li>
+								<p class="font-display text-lg font-semibold text-white sm:text-xl">{lead.name}</p>
+								<p class="mt-1 text-sm leading-6 text-sky-200/65">{localize(lead.role, lang)}</p>
+							</li>
+						))
+					}
+				</ul>
+				<p class="mt-8 border-t border-white/8 pt-6 text-sm leading-7 text-sky-100/68">
+					{localize(teamContent.funding, lang)}
+				</p>
+			</div>
+
+			<div class="rounded-2xl bg-white/5 p-7 sm:p-9" data-reveal style="--reveal-i: 1;">
+				<ul class="flex flex-wrap gap-2.5">
+					{
+						teamContent.partners.map((partner) => (
+							<li class="rounded-full bg-white/7 px-4 py-2.5 text-sm font-semibold text-sky-50/90">
+								{localize(partner, lang)}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

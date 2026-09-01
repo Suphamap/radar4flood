@@ -1,0 +1,39 @@
+---
+import type { Lang } from '../../lib/i18n';
+import { impactIntro, impactItems } from '../../data/radar4flood';
+import SectionHeading from './SectionHeading.astro';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative py-24 sm:py-32" id="r4f-impact">
+	<div class="mx-auto max-w-[94rem] px-5 sm:px-8 2xl:max-w-[102rem]">
+		<SectionHeading lang={lang} chapter="06" kicker={impactIntro.kicker} title={impactIntro.title} />
+
+		<ol class="mt-14 max-w-4xl">
+			{
+				impactItems.map((item, i) => (
+					<li
+						class="group flex items-baseline gap-6 border-b border-white/8 py-7 first:border-t sm:gap-10"
+						data-reveal
+						style={`--reveal-i: ${i % 3};`}
+					>
+						<span class="font-display text-lg font-semibold text-r4f-sky" aria-hidden="true">
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<div>
+							<p class="font-display text-xl font-semibold leading-snug text-white transition duration-300 group-hover:text-sky-200 sm:text-2xl">
+								{item.th}
+							</p>
+							<p class="mt-1.5 text-sm italic text-sky-200/55">{item.en}</p>
+						</div>
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>

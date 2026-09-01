@@ -7,6 +7,7 @@ const th = {
 	navStaff: 'Staff',
 	navContact: 'Contact Us',
 	navMenu: 'เมนู',
+	navClose: 'ปิดเมนู',
 	navLangSwitch: 'EN',
 
 	// Shared metadata
@@ -18,18 +19,26 @@ const th = {
 		'คลังข่าวและความก้าวหน้าของโครงการ Radar4Flood ครอบคลุมประกาศ งานภาคสนาม กิจกรรม ผลงานเผยแพร่ และหมุดหมายโครงการ',
 
 	// Hero
-	heroBadge: 'ระบบเรดาร์เพื่อการคาดการณ์น้ำท่วม',
-	heroTitle: 'Radar4Flood',
-	heroSubtitle: 'เชื่อมโยงข้อมูลเรดาร์อากาศ งานภาคสนาม และงานวิชาการ เพื่อสื่อสารการคาดการณ์น้ำท่วมอย่างชัดเจน',
-	heroDescription:
-		'เว็บไซต์สาธารณะสำหรับแนะนำโครงการ เผยแพร่ข่าวและกิจกรรม แสดงผลงานวิชาการ และนำผู้ใช้งานไปยังหน้า forecast ที่มีอยู่แล้ว',
-	heroForecastCta: 'เข้าสู่หน้าพยากรณ์',
-	heroNewsCta: 'อ่านข่าวล่าสุด',
-	heroCaption: 'ภาพประกอบสำหรับสื่อสารงานเรดาร์และการตรวจวัดภาคสนาม',
+	heroBadge: 'Radar4Flood — งานวิจัยเรดาร์อากาศและอุทกวิทยา',
+	heroTitle: 'จากสัญญาณฝน สู่การมองเห็นความเสี่ยงน้ำท่วม',
+	heroSubtitle:
+		'เชื่อมโยงข้อมูลเรดาร์อากาศ การตรวจวัดภาคสนาม และงานวิจัยด้านอุทกวิทยา เพื่อพัฒนาการคาดการณ์น้ำท่วมบนหลักฐานที่ตรวจสอบได้',
+	heroDescription: 'ติดตามวิธีการทำงาน ข้อมูลจากพื้นที่ศึกษา ความก้าวหน้า และผลงานวิชาการของทีมวิจัย Radar4Flood',
+	heroForecastCta: 'รู้จักงานวิจัย Radar4Flood',
+	heroNewsCta: 'ดูข่าวและงานภาคสนาม',
+	heroCaption: 'สถานีเรดาร์และทีมวิจัยระหว่างการตรวจวัดข้อมูลภาคสนาม',
+	heroResearchLabel: 'กรอบการวิจัย',
+	heroResearchRadarTitle: 'เรดาร์อากาศ',
+	heroResearchRadarDetail: 'ติดตามและวิเคราะห์สัญญาณฝน',
+	heroResearchFieldTitle: 'การตรวจวัดภาคสนาม',
+	heroResearchFieldDetail: 'ตรวจสอบข้อมูลกับสภาพพื้นที่จริง',
+	heroResearchFloodTitle: 'อุทกวิทยา',
+	heroResearchFloodDetail: 'เชื่อมโยงข้อมูลสู่การคาดการณ์น้ำท่วม',
 
 	// Signals section
-	signalsTitle: 'เว็บไซต์โครงการ ไม่ใช่หน้าจอ forecast',
-	signalsDescription: 'หน้าเว็บนี้จัดระเบียบข้อมูลสาธารณะของโครงการ ส่วนระบบพยากรณ์จะเปิดผ่านหน้า Radar4Flood โดยตรง',
+	signalsTitle: 'จากข้อมูล สู่หลักฐานงานวิจัย',
+	signalsDescription:
+		'Radar4Flood เชื่อมการวิเคราะห์ข้อมูล การตรวจสอบในพื้นที่ และการเผยแพร่ผลลัพธ์ไว้ในกระบวนการเดียวกัน',
 
 	// News section
 	newsLabel: 'News',
@@ -86,6 +95,17 @@ const th = {
 	pubTitle: 'ผลงานและเอกสารวิชาการ',
 	pubDescription: 'บทความวารสาร รายงานการประชุม และเอกสารโครงการจากทีมวิจัย Radar4Flood',
 	pubViewAll: 'ดูผลงานวิชาการทั้งหมด',
+
+	// Radar4Flood system page
+	r4fMetaTitle: 'Radar4Flood | ระบบคาดการณ์น้ำท่วมฉับพลันด้วยฝนเรดาร์',
+	r4fMetaDescription:
+		'รู้จักระบบ Radar4Flood — คาดการณ์น้ำท่วมฉับพลันและจำลองการกัดเซาะหน้าดินแบบใกล้เวลาจริงด้วยผลิตภัณฑ์ฝนจากเรดาร์ พร้อมฟีเจอร์หลัก พื้นที่ศึกษา และช่องทางใช้งานจริง',
+	r4fScrollCue: 'เลื่อนเพื่อสำรวจระบบ',
+	r4fImageSlotLabel: 'พื้นที่สำหรับภาพจริง',
+	r4fOpenForecast: 'เปิดระบบพยากรณ์',
+	r4fExploreFeatures: 'สำรวจฟีเจอร์ทั้งหมด',
+	r4fOpenWebApp: 'เปิด Web Application',
+	r4fDownloadApp: 'ดาวน์โหลดแอปพลิเคชัน',
 
 	// Forecast CTA
 	forecastCtaTitle: 'ทางเข้าระบบ Radar4Flood',

@@ -1,0 +1,54 @@
+---
+import { localize } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+import { finalCta, webPlatform } from '../../data/radar4flood';
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section class="relative overflow-hidden py-24 sm:py-32">
+	<div class="r4f-grid-texture absolute inset-0" aria-hidden="true"></div>
+	<div class="relative mx-auto max-w-3xl px-5 text-center sm:px-8">
+		<h2 class="font-display text-[clamp(2rem,4.6vw,3.5rem)] font-semibold leading-[1.12] text-white" data-reveal>
+			{localize(finalCta.title, lang)}
+		</h2>
+		<p
+			class="mx-auto mt-5 max-w-xl text-base leading-8 text-sky-100/76 sm:text-lg sm:leading-9"
+			data-reveal
+			style="--reveal-i: 1;"
+		>
+			{localize(finalCta.body, lang)}
+		</p>
+		<div class="mt-9 flex flex-wrap justify-center gap-3" data-reveal style="--reveal-i: 2;">
+			{
+				webPlatform.links.map((link) => (
+					<a
+						class="inline-flex min-h-11 items-center gap-2 rounded-full bg-r4f-teal px-6 py-3 text-sm font-bold text-white transition hover:bg-[#0d7b81] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+						href={link.href}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{localize(link.label, lang)}
+						<svg
+							class="h-4 w-4"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							aria-hidden="true"
+						>
+							<path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round" />
+						</svg>
+					</a>
+				))
+			}
+		</div>
+		<p class="mt-5 text-sm font-semibold text-sky-200/60" data-reveal style="--reveal-i: 3;">
+			Radar4Flood2023 · iOS App Store · Android Google Play
+		</p>
+	</div>
+</section>

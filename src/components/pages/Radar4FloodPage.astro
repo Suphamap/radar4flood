@@ -1,0 +1,96 @@
+---
+import '../../styles/radar4flood.css';
+import Layout from '../../layouts/Layout.astro';
+import R4FHero from '../radar4flood/R4FHero.astro';
+import WhyRadarSection from '../radar4flood/WhyRadarSection.astro';
+import FeaturesSection from '../radar4flood/FeaturesSection.astro';
+import StationDataSection from '../radar4flood/StationDataSection.astro';
+import StudyAreaSection from '../radar4flood/StudyAreaSection.astro';
+import PlatformsSection from '../radar4flood/PlatformsSection.astro';
+import ImpactSection from '../radar4flood/ImpactSection.astro';
+import TeamSection from '../radar4flood/TeamSection.astro';
+import FinalCtaSection from '../radar4flood/FinalCtaSection.astro';
+import { webPlatform } from '../../data/radar4flood';
+import { t } from '../../lib/i18n';
+import type { Lang } from '../../lib/i18n';
+
+interface Props {
+	lang?: Lang;
+}
+
+const { lang = 'th' } = Astro.props;
+const forecastUrl = import.meta.env.PUBLIC_FORECAST_URL || webPlatform.links[0].href;
+---
+
+<Layout title={t(lang, 'r4fMetaTitle')} description={t(lang, 'r4fMetaDescription')} lang={lang}>
+	<div class="r4f-page">
+		<R4FHero lang={lang} forecastUrl={forecastUrl} />
+		<WhyRadarSection lang={lang} />
+		<FeaturesSection lang={lang} />
+		<StationDataSection lang={lang} />
+		<StudyAreaSection lang={lang} />
+		<PlatformsSection lang={lang} />
+		<ImpactSection lang={lang} />
+		<TeamSection lang={lang} />
+		<FinalCtaSection lang={lang} />
+	</div>
+</Layout>
+
+<script>
+	// Always open this page at the top so the hero boot sequence plays on refresh,
+	// instead of the browser restoring the previous scroll position.
+	if ('scrollRestoration' in history) {
+		history.scrollRestoration = 'manual';
+	}
+	window.scrollTo(0, 0);
+
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (!reducedMotion && 'IntersectionObserver' in window) {
+		document.documentElement.classList.add('r4f-motion');
+
+		const revealObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-in');
+						revealObserver.unobserve(entry.target);
+					}
+				}
+			},
+			{ threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+		);
+		document.querySelectorAll('[data-reveal]').forEach((el) => revealObserver.observe(el));
+
+		const formatCount = (value: number, decimals: number) =>
+			value.toLocaleString('th-TH', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+		const animateCount = (el: HTMLElement) => {
+			const target = Number(el.dataset.count);
+			const decimals = Number(el.dataset.decimals || 0);
+			if (!Number.isFinite(target)) return;
+			const duration = 1400;
+			const start = performance.now();
+			const tick = (now: number) => {
+				const progress = Math.min((now - start) / duration, 1);
+				const eased = 1 - Math.pow(1 - progress, 3);
+				el.textContent = formatCount(target * eased, decimals);
+				if (progress < 1) requestAnimationFrame(tick);
+			};
+			requestAnimationFrame(tick);
+		};
+
+		const countObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						animateCount(entry.target as HTMLElement);
+						countObserver.unobserve(entry.target);
+					}
+				}
+			},
+			{ threshold: 0.6 },
+		);
+		document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => countObserver.observe(el));
+	}
+</script>

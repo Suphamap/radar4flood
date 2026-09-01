@@ -1,0 +1,45 @@
+---
+import { localize } from '../../lib/i18n';
+import type { BilingualText, Lang } from '../../lib/i18n';
+
+/**
+ * Chapter-style heading used at the top of each Radar4Flood page section:
+ * oversized outlined chapter number, kicker line, headline, optional body.
+ */
+interface Props {
+	lang: Lang;
+	chapter: string;
+	kicker: BilingualText;
+	title: BilingualText;
+	body?: BilingualText;
+}
+
+const { lang, chapter, kicker, title, body } = Astro.props;
+---
+
+<header class="relative max-w-3xl">
+	<span class="r4f-chapter pointer-events-none absolute -top-7 left-0 sm:-top-10" aria-hidden="true" data-reveal>
+		{chapter}
+	</span>
+	<div class="relative pt-12 sm:pt-16">
+		<p class="r4f-kicker" data-reveal>{localize(kicker, lang)}</p>
+		<h2
+			class="mt-4 font-display text-[clamp(2rem,4.6vw,3.5rem)] font-semibold leading-[1.12] text-white"
+			data-reveal
+			style="--reveal-i: 1;"
+		>
+			{localize(title, lang)}
+		</h2>
+		{
+			body && (
+				<p
+					class="mt-5 max-w-2xl text-base leading-8 text-sky-100/78 sm:text-lg sm:leading-9"
+					data-reveal
+					style="--reveal-i: 2;"
+				>
+					{localize(body, lang)}
+				</p>
+			)
+		}
+	</div>
+</header>
