@@ -60,12 +60,9 @@ export const heroContent = {
 	kicker: { th: 'Near Real-Time Flood Forecasting · ระบบพร้อมใช้งานจริง' },
 	titleLead: { th: 'เห็นฝนทั้งลุ่มน้ำ' },
 	titleAccent: { th: 'ก่อนน้ำจะมาถึง' },
-	subtitle: {
-		th: 'Radar4Flood คือระบบคาดการณ์น้ำท่วมฉับพลันและจำลองการกัดเซาะหน้าดินแบบใกล้เวลาจริง ด้วยผลิตภัณฑ์ฝนจากเรดาร์ตรวจอากาศ',
+	support: {
+		th: 'Radar4Flood คาดการณ์น้ำท่วมฉับพลันและจำลองการกัดเซาะหน้าดินแบบใกล้เวลาจริงด้วยฝนจากเรดาร์ตรวจอากาศ ทำงานอัตโนมัติต่อเนื่องทั้งบนเว็บและมือถือ เพื่อให้ชุมชนและหน่วยงานเตรียมรับมือได้ทันท่วงที',
 		en: 'Near real-time flood forecasting and soil erosion modelling based on radar rainfall products.',
-	},
-	description: {
-		th: 'ระบบอัตโนมัติที่ตรวจวัด วิเคราะห์ และคาดการณ์อย่างต่อเนื่อง ทำงานทั้งบน Web Application และ Mobile Application เพื่อให้ชุมชนและหน่วยงานเตรียมรับมือได้ทันท่วงที',
 	},
 } as const;
 

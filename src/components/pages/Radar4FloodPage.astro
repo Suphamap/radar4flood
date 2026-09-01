@@ -37,6 +37,13 @@ const forecastUrl = import.meta.env.PUBLIC_FORECAST_URL || webPlatform.links[0].
 </Layout>
 
 <script>
+	// Always open this page at the top so the hero boot sequence plays on refresh,
+	// instead of the browser restoring the previous scroll position.
+	if ('scrollRestoration' in history) {
+		history.scrollRestoration = 'manual';
+	}
+	window.scrollTo(0, 0);
+
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 	if (!reducedMotion && 'IntersectionObserver' in window) {

@@ -6,26 +6,26 @@ import type { ProjectSignal } from '../types/content';
  */
 export const projectSignals: ProjectSignal[] = [
 	{
-		label: 'Project focus',
-		value: 'Radar rainfall',
+		label: 'ข้อมูลเรดาร์',
+		value: 'วิเคราะห์สัญญาณฝน',
 		detail: {
-			th: 'ข้อมูลเรดาร์อากาศสำหรับงานคาดการณ์น้ำท่วม',
+			th: 'ศึกษาข้อมูลฝนจากเรดาร์อากาศเพื่อทำความเข้าใจสภาพฝนในพื้นที่',
 			en: 'Weather radar data for flood forecasting',
 		},
 	},
 	{
-		label: 'Content flow',
-		value: 'News + field work',
+		label: 'การตรวจสอบภาคสนาม',
+		value: 'เทียบกับพื้นที่จริง',
 		detail: {
-			th: 'ข่าว กิจกรรม และภาพการทำงานภาคสนาม',
+			th: 'ใช้การตรวจวัดและการสำรวจภาคสนามช่วยตรวจสอบบริบทของข้อมูล',
 			en: 'News, activities, and fieldwork photography',
 		},
 	},
 	{
-		label: 'Academic output',
-		value: 'Publication records',
+		label: 'ผลลัพธ์งานวิจัย',
+		value: 'เผยแพร่องค์ความรู้',
 		detail: {
-			th: 'บทความ รายงาน และเอกสารประกอบโครงการ',
+			th: 'สื่อสารความก้าวหน้าผ่านบทความ รายงาน และเอกสารวิชาการ',
 			en: 'Articles, reports, and project documentation',
 		},
 	},

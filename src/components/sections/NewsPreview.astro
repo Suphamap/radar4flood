@@ -22,7 +22,7 @@ const categoryLabels: Record<NewsCategory, string> = {
 ---
 
 <section id="news" class="mx-auto max-w-[94rem] px-5 py-16 sm:px-8 lg:py-24 2xl:max-w-[102rem]">
-	<div class="grid gap-7 md:grid-cols-[0.72fr_1fr] md:items-end">
+	<div class="grid gap-7 md:grid-cols-[0.72fr_1fr] md:items-end" data-home-reveal>
 		<div>
 			<p class="text-sm font-semibold text-r4f-teal">{t(lang, 'newsLabel')}</p>
 			<h2
@@ -53,9 +53,10 @@ const categoryLabels: Record<NewsCategory, string> = {
 					]}
 					style={
 						index === 0
-							? `background-image: linear-gradient(180deg, rgb(0 30 69 / 4%) 0%, rgb(0 30 69 / 88%) 100%), url(${item.image?.src ?? '/images/radar4flood-field-radar.png'});`
-							: undefined
+							? `--home-reveal-i: ${index}; background-image: linear-gradient(180deg, rgb(0 30 69 / 4%) 0%, rgb(0 30 69 / 88%) 100%), url(${item.image?.src ?? '/images/radar4flood-field-radar.png'});`
+							: `--home-reveal-i: ${index};`
 					}
+					data-home-reveal
 				>
 					<div class:list={[index === 0 ? 'flex h-full max-w-2xl flex-col justify-end' : 'max-w-xl']}>
 						<div class="mb-5 flex flex-wrap items-center gap-3">
